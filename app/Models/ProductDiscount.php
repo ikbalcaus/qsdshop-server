@@ -8,13 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class ProductDiscount extends Model
 {
     protected $table = 'product_discount';
+
     public function product()
     {
-        return $this->belongsTo(Product::class);
+        return $this->hasMany(Product::class);
     }
 
     public function discount()
     {
-        return $this->belongsTo(Discount::class);
+        return $this->hasMany(Discount::class);
     }
 }

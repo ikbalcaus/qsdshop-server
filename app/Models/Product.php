@@ -35,8 +35,8 @@ class Product extends Model
         return $this->belongsTo(Brand::class, 'brand_id', 'id');
     }
 
-    public function colors(): BelongsTo {
-        return $this->belongsTo(Color::class, 'color_id', 'id');
+    public function color(): BelongsTo {
+        return $this->belongsTo(Color::class);
     }
 
     public function rating(): HasMany {
@@ -45,6 +45,10 @@ class Product extends Model
 
     public function favorite(): HasMany {
         return $this->hasMany(Favorite::class);
+    }
+
+    public function productDiscounts(): BelongsTo {
+        return $this->belongsTo(ProductDiscount::class,'product_id', 'id');
     }
 
     public function images(): HasMany {
