@@ -4,9 +4,9 @@ use Illuminate\Support\Facades\Route;
 use App\Mail\ValidationMail;
 use App\Mail\PasswordReset;
 use App\Mail\OrderConfirmation;
+use App\Mail\ProductInStock;
 use App\Models\Order;
 use App\Models\Product;
-
 use App\Models\OrderProductSize;
 use App\Models\ProductSize;
 use App\Models\Size;
@@ -19,6 +19,9 @@ Route::get('/', function () {
     //test za slanje emailova
 //Mail::to('laravel.praksa@gmail.com')->send(new ValidationMail('123456'));
 //Mail::to('laravel.praksa@gmail.com')->send(new PasswordReset('https://youtube.com'));
+//Mail::to('laravel.praksa@gmail.com')->send(new ProductInStock('Adnan',"Nike patike",'https://www.intersport.ba'));
+
+
 // $order = new Order();
 // $order->user = new Order();
 // $order->user->first_name = 'Adnan';
