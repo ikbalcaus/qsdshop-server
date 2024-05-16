@@ -24,8 +24,10 @@ protected $fillable=[
 public function user():BelongsTo{
     return $this->belongsTo(User::class);
 }
-public function orderProductSize():HasMany{
+public function orderProductSizes():HasMany{
     return $this->hasMany(OrderProductSize::class);
 }
-
+public function orderProductSize():BelongsTo{
+    return $this->belongsTo(OrderProductSize::class);
+}
 }
