@@ -11,7 +11,7 @@ Route::get('/user', function (Request $request) {
 Route::post('/register',[AuthController::class,'register']);
 Route::post('/login',[AuthController::class,'login']);
 Route::post('/logout','AuthController@logout');
-Route::post('/requestValidationKey','AuthController@requestValidationKey');
+Route::post('/requestValidationKey',[AuthController::class,'requestValidationKey']);
 Route::post('/resetPassword','AuthController@resetPassword');
 Route::post('/refresh','AuthController@refresh');
 Route::post('/changePassword','AuthController@changePassword');
