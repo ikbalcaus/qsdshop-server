@@ -9,7 +9,7 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::post('/register',[AuthController::class,'register']);
-Route::post('/login','AuthController@login');
+Route::post('/login',[AuthController::class,'login']);
 Route::post('/logout','AuthController@logout');
 Route::post('/requestValidationKey','AuthController@requestValidationKey');
 Route::post('/resetPassword','AuthController@resetPassword');
