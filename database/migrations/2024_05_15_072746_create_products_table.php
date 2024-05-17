@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->float('price');
-            $table->enum('gender',['Male','Female','Child']);
+            $table->enum('gender', [1,2,3])->comment('1 - male, 2 - female, 3 - child')->default('1');
             $table->string('description');
             $table->integer('total_rating')->default(0);
             $table->float('average_rating')->default(0);
