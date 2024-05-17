@@ -43,7 +43,7 @@ if(User::where('email', $request->input('email'))->exists()){
             ], 200);
         }
 
-    protected function login(LoginRequests $request){
+    public function login(LoginRequests $request){
 
         $user = User::where('email', $request->input('email'))->first();
 

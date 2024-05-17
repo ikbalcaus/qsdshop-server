@@ -11,7 +11,7 @@ class LoginRequests extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,7 @@ class LoginRequests extends FormRequest
     public function rules(): array
     {
         return [
-                "email"=> "required|mail",
+                "email"=> "required|email",
                 'password'=>'required|string|min:8'
         ];
     }
