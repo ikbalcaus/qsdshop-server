@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Http\Requests\LoginRequests;
 use App\Http\Requests\RegisterRequests;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
@@ -13,6 +14,10 @@ class AuthController extends Controller
     public function register(RegisterRequests $request){
 //dodati registraciju roleova i status za usere
 
+
+if(User::where('email', $request->input('email'))->exists()){
+    return response()->json(['message'=> 'Email is already used'],400);
+}
         //custom request class
         $user = User::create([
             'first_name' => $request->input('first_name'),
@@ -24,7 +29,9 @@ class AuthController extends Controller
             'zip_code' => $request->input('zip_code'),
             'phone' => $request->input('phone'),
             'role'=> $request->input('role'),
-            'status'=>$request->input('status')
+            'status'=>$request->input('status'),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
 
         //Popraviti token
@@ -35,4 +42,21 @@ class AuthController extends Controller
                 'user' => $user,
             ], 200);
         }
+
+    protected function login(LoginRequests $request){
+
+        $user = User::where('email', $request->input('email'))->first();
+
+        if(!$user || !Hash::check($request->input('password'), $user->password)){
+            return response()->json(['message'=>'Invalid credentials'],401);
+        }
+            $token = $user->createToken('auth_token')->plainTextToken;
+
+
+         return response()->json([
+            'message'=>'User logged in successfully',
+            'access_token'=>$token,
+            'token_type'=>'Bearer'
+        ],200);
+    }
 }
