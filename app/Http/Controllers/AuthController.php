@@ -53,13 +53,13 @@ if(User::where('email', $request->input('email'))->exists()){
         if(!$user || !Hash::check($request->input('password'), $user->password)){
             return response()->json(['message'=>'Invalid credentials'],401);
         }
-            $token = $user->createToken('auth_token')->plainTextToken;
+         //   $token = $user->createToken('auth_token')->plainTextToken;
 
 
          return response()->json([
             'message'=>'User logged in successfully',
-            'access_token'=>$token,
-            'token_type'=>'Bearer'
+           // 'access_token'=>$token,
+           // 'token_type'=>'Bearer'
         ],200);
     }
 
