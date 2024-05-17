@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ProductSize extends Model
 {
@@ -21,8 +23,19 @@ class ProductSize extends Model
         return $this->belongsTo(Product::class,'product_id');
     }
 
-    public function size()
+    public function sizes()
     {
         return $this->belongsTo(Size::class,'size_id');
+    }
+
+
+    public function product()
+    {
+        return $this->hasMany(Product::class,'product_id');
+    }
+
+    public function size()
+    {
+        return $this->hasMany(Size::class,'size_id');
     }
 }

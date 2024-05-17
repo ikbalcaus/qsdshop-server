@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class OrderProductSize extends Model
 {
@@ -23,6 +24,10 @@ class OrderProductSize extends Model
     public function productSize(): HasMany {
         return $this->hasMany(ProductSize::class);
 }
-
-
+public function productSizes():BelongsTo{
+    return $this->belongsTo(ProductSize::class, 'product_size_id');
+}
+public function product():BelongsTo{
+    return $this->belognsTo(Product::class,'product_id','id');
+}
 }
