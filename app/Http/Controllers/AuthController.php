@@ -14,7 +14,8 @@ use App\Http\Requests\ValidationKeyRequest;
 use App\Mail\ValidationMail;
 class AuthController extends Controller
 {
-    public function register(RegisterRequests $request){
+    public function register(RegisterRequests $request): \Illuminate\Http\JsonResponse
+    {
 //dodati registraciju roleova i status za usere
 
 
@@ -46,7 +47,8 @@ if(User::where('email', $request->input('email'))->exists()){
             ], 200);
         }
 
-    public function login(LoginRequests $request){
+    public function login(LoginRequests $request): \Illuminate\Http\JsonResponse
+    {
 
         $user = User::where('email', $request->input('email'))->first();
 
@@ -63,7 +65,8 @@ if(User::where('email', $request->input('email'))->exists()){
         ],200);
     }
 
-public function requestValidationKey(ValidationKeyRequest $request){
+public function requestValidationKey(ValidationKeyRequest $request): \Illuminate\Http\JsonResponse
+{
 
 $validationKey=rand(100000,999999);
 Mail::to($request->email)->send(new ValidationMail($validationKey));
