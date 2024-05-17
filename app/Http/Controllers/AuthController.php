@@ -9,6 +9,9 @@ use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use Illuminate\Support\Facades\Mail;
+use App\Http\Requests\ValidationKeyRequest;
+use App\Mail\ValidationMail;
 class AuthController extends Controller
 {
     public function register(RegisterRequests $request){
@@ -59,4 +62,11 @@ if(User::where('email', $request->input('email'))->exists()){
             'token_type'=>'Bearer'
         ],200);
     }
+
+public function requestValidationKey(ValidationKeyRequest $request){
+
+$validationKey=rand(100000,999999);
+Mail::to($request->email)->send(new ValidationMail($validationKey));
+return response()->json(['message'=>"Validation key sent to mail"]);
+}
 }
