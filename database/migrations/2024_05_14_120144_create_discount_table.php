@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('discount', function (Blueprint $table) {
             $table->id();
-            $table->string('DiscountName');
-            $table->decimal('DiscountValue',8,2);
-            $table->dateTime('ValidFrom');
-            $table->dateTime('ValidTo');
+            $table->string('discountName');
+            $table->decimal('discountValue',8,2);
+            $table->dateTime('validFrom');
+            $table->dateTime('validTo');
             $table->timestamps();
         });
     }
