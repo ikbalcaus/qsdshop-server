@@ -30,7 +30,7 @@ class RegisterRequests extends FormRequest
             'address' => 'required|string|max:255',
             'zip_code' => 'required|string|max:255',
             'phone' => 'required|string|regex:/^[0-9]+$/|min:10|max:15',
-            'role'=>'required|in:Superadmin,Admin,Uditor',
+            'role'=>'required|in:1,2,3',
             'status'=>'required|boolean'
         ];
     }

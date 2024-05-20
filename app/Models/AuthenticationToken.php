@@ -10,6 +10,10 @@ class AuthenticationToken extends Model
     use HasFactory;
 
     protected $table = 'authentication_token';
+    protected $fillable = [
+        'user_id',
+        'token_value',
+    ];
 
     public function user()
     {
