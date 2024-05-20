@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequests;
 use App\Http\Requests\RegisterRequests;
+use App\Http\Requests\ResetPasswordRequest;
 use App\Models\AuthenticationToken;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
@@ -84,5 +85,27 @@ class AuthController extends Controller
         $key->save();
         Mail::to($user->email)->send(new ValidationMail($validationKey));
         return response()->json(['message' => "Validation key sent to mail"]);
+    }
+
+    public function resetPassword(ResetPasswordRequest $request)
+    {
+        $user = User::where('email', $request->input('email'))->first();
+        if (!$user) {
+            return response()->json(['message' => 'Invalid mail'], 404);
+        }
+        $authKey = DB::table('authentication_token')
+            ->where('user_id', $user->id)->where('token_value', $request->key)->first();
+        if (!$authKey) {
+            return response()->json(['message' => "Invalid validation key"], 400);
+
+        }
+        $user->password = Hash::make($request->password);
+        $user->save();
+        return response()->json(['message' => "Password reset successfully"], 200);
+    }
+
+    public function refresh()
+    {
+
     }
 }
