@@ -7,6 +7,7 @@ use App\Http\Requests\LoginRequests;
 use App\Http\Requests\RegisterRequests;
 use App\Http\Requests\ResetPasswordRequest;
 use App\Models\AuthenticationToken;
+use Carbon\Carbon;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -104,8 +105,17 @@ class AuthController extends Controller
         return response()->json(['message' => "Password reset successfully"], 200);
     }
 
-    public function refresh()
+    public function refresh(Request $request)
     {
-
+        $user = auth()->guard('api')->user();
+        $newToken = $user->createToken('Personal access token'); // kreira novi token za korisnika
+        $token = $newToken->token;
+        $token->expires_at = Carbon::now()->addMinutes(60); // postavljanje vremena nakon kojeg ce isteci
+        $token->save(); //spasava u bazu
+        return response()->json(['user' => ['user' => $user],
+            'authorization' => [
+                'token' => $newToken->accessToken,
+                'type' => 'Bearer'
+            ]]);
     }
 }

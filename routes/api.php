@@ -14,6 +14,6 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', 'AuthController@logout');
 Route::post('/requestValidationKey', [AuthController::class, 'requestValidationKey']);
 Route::post('/resetPassword', [AuthController::class, 'resetPassword']);
-Route::post('/refresh', 'AuthController@refresh');
+Route::middleware('auth:api')->post('/refresh', [AuthController::class, 'refresh']);
 Route::post('/changePassword', 'AuthController@changePassword');
 
