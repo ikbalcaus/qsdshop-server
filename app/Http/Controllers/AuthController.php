@@ -16,6 +16,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\ValidationKeyRequest;
 use App\Mail\ValidationMail;
+use Illuminate\Support\Facades\Auth;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
@@ -60,13 +62,12 @@ class AuthController extends Controller
         if (!$user || !Hash::check($request->input('password'), $user->password)) {
             return response()->json(['message' => 'Invalid credentials'], 401);
         }
-        //   $token = $user->createToken('auth_token')->plainTextToken;
-
+        $token = JWTAuth::fromUser($user);
 
         return response()->json([
             'message' => 'User logged in successfully',
-            // 'access_token'=>$token,
-            // 'token_type'=>'Bearer'
+            'access_token' => $token,
+            'token_type' => 'Bearer'
         ], 200);
     }
 
@@ -77,7 +78,6 @@ class AuthController extends Controller
         if (!$user) {
             return response()->json(['message' => 'User not found'], 404);
         }
-
         $validationKey = rand(100000, 999999);
         $key = new AuthenticationToken([
             'user_id' => $user->id,
@@ -107,15 +107,24 @@ class AuthController extends Controller
 
     public function refresh(Request $request)
     {
-        $user = auth()->guard('api')->user();
-        $newToken = $user->createToken('Personal access token'); // kreira novi token za korisnika
-        $token = $newToken->token;
-        $token->expires_at = Carbon::now()->addMinutes(60); // postavljanje vremena nakon kojeg ce isteci
-        $token->save(); //spasava u bazu
-        return response()->json(['user' => ['user' => $user],
+        $user = Auth::guard('api')->user();
+        if (!$user) {
+            return response()->json(['error' => 'User not authenticated'], 401);
+        }
+        JWTAuth::parseToken()->invalidate();
+
+        $token = JWTAuth::fromUser($user);
+
+        return response()->json([
+            'user' => [
+                'id' => $user->id,
+                'first_name' => $user->first_name,
+                'last_name' => $user->last_name
+            ],
             'authorization' => [
-                'token' => $newToken->accessToken,
+                'token' => $token,
                 'type' => 'Bearer'
-            ]]);
+            ]
+        ]);
     }
 }
