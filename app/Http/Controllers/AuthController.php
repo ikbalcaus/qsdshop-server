@@ -7,6 +7,7 @@ use App\Http\Requests\LoginRequests;
 use App\Http\Requests\RegisterRequests;
 use App\Http\Requests\ResetPasswordRequest;
 use App\Models\AuthenticationToken;
+use App\Models\ValidationKey;
 use Carbon\Carbon;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
@@ -79,9 +80,9 @@ class AuthController extends Controller
             return response()->json(['message' => 'User not found'], 404);
         }
         $validationKey = rand(100000, 999999);
-        $key = new AuthenticationToken([
+        $key = new ValidationKey([
             'user_id' => $user->id,
-            'token_value' => $validationKey
+            'validationKey' => $validationKey
         ]);
         $key->save();
         Mail::to($user->email)->send(new ValidationMail($validationKey));
@@ -94,8 +95,8 @@ class AuthController extends Controller
         if (!$user) {
             return response()->json(['message' => 'Invalid mail'], 404);
         }
-        $authKey = DB::table('authentication_token')
-            ->where('user_id', $user->id)->where('token_value', $request->key)->first();
+        $authKey = DB::table('validation_keys')
+            ->where('user_id', $user->id)->where('validationKey', $request->key)->first();
         if (!$authKey) {
             return response()->json(['message' => "Invalid validation key"], 400);
 
