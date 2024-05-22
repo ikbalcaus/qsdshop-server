@@ -11,13 +11,15 @@ class Size extends Model
 {
     use HasFactory;
 
-    protected $table = 'SizeName';
+    protected $table = 'size';
 
     protected $fillable = [
-        'size'
+        'id',
+        'name'
     ];
 
-    public function productSize(): BelongsTo {
-           return $this->belongsTo(ProductSize::class);
+    public function productSize(): BelongsTo
+    {
+        return $this->belongsTo(ProductSize::class);
     }
 }
