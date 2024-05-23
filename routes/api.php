@@ -18,11 +18,12 @@ Route::post('/resetPassword', [AuthController::class, 'resetPassword']);
 Route::middleware('auth:api')->post('/refresh', [AuthController::class, 'refresh']);
 Route::post('/changePassword', [AuthController::class, 'changePassword']);
 
-
 //test za prijavljenog usera
 Route::get('/profile', [AuthController::class, 'profile']);
 
+
 Route::get('/sizes', [SizeController::class, 'sizes']);
-Route::post('/addSize', [SizeController::class, 'addSize']);
-Route::put('/updateSize', [SizeController::class, 'updateSize']);
-Route::delete('/deleteSize/{id}', [SizeController::class, 'deleteSize']);
+Route::middleware(\App\Http\Middleware\IsAdminSuperAdmin::class)->post('/addSize', [SizeController::class, 'addSize']);
+Route::middleware(\App\Http\Middleware\IsAdminSuperAdmin::class)->put('/updateSize', [SizeController::class, 'updateSize']);
+Route::middleware(\App\Http\Middleware\IsAdminSuperAdmin::class)->delete('/deleteSize/{id}', [SizeController::class, 'deleteSize']);
+//Iz nekog razloga ne prepoznaje alias adminSuperAdmin, radi jedino ovako sa rutom
