@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BrandController;
 use App\Http\Controllers\SizeController;
+use App\Http\Middleware\IsAdminSuperAdmin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,3 +29,8 @@ Route::middleware(\App\Http\Middleware\IsAdminSuperAdmin::class)->post('/addSize
 Route::middleware(\App\Http\Middleware\IsAdminSuperAdmin::class)->put('/updateSize', [SizeController::class, 'updateSize']);
 Route::middleware(\App\Http\Middleware\IsAdminSuperAdmin::class)->delete('/deleteSize/{id}', [SizeController::class, 'deleteSize']);
 //Iz nekog razloga ne prepoznaje alias adminSuperAdmin, radi jedino ovako sa rutom
+
+Route::get('/brands',[BrandController::class,'brands']);
+Route::middleware(IsAdminSuperAdmin::class)->post('/addBrand',[BrandController::class,'addBrand']);
+Route::middleware(IsAdminSuperAdmin::class)->post('/updateBrand/{id}',[BrandController::class,'updateBrand']);
+Route::middleware(IsAdminSuperAdmin::class)->post('/deleteBrand/{id}',[BrandController::class,'deleteBrand']);
