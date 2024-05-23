@@ -27,7 +27,7 @@ class RegisterRequests extends FormRequest
             "email"=> "required|email|string",
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'password'=>'required|string|min:8|regex:/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/',
+            'password'=>'required|string|min:8|/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/',
             'city' => 'required|string|max:255',
             'address' => 'required|string|max:255',
             'zip_code' => 'required|string|max:255',
