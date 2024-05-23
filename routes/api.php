@@ -32,5 +32,5 @@ Route::middleware(\App\Http\Middleware\IsAdminSuperAdmin::class)->delete('/delet
 
 Route::get('/brands',[BrandController::class,'brands']);
 Route::middleware(IsAdminSuperAdmin::class)->post('/addBrand',[BrandController::class,'addBrand']);
-Route::middleware(IsAdminSuperAdmin::class)->post('/updateBrand/{id}',[BrandController::class,'updateBrand']);
-Route::middleware(IsAdminSuperAdmin::class)->post('/deleteBrand/{id}',[BrandController::class,'deleteBrand']);
+Route::middleware(IsAdminSuperAdmin::class)->put('/updateBrand/{id}',[BrandController::class,'updateBrand']);
+Route::middleware(IsAdminSuperAdmin::class)->delete('/deleteBrand/{id}',[BrandController::class,'deleteBrand']);

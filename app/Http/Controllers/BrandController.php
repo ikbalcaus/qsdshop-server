@@ -19,7 +19,7 @@ class BrandController extends Controller
         $brand=Brand::create([
            'name'=>$request->name,
         ]);
-        return response()->json(['message' => 'Brand successfully created.'],200,$brand);
+        return response()->json($brand,200);
     }
 
     public function updateBrand(BrandRequest $request,$id){
@@ -28,7 +28,7 @@ class BrandController extends Controller
            $brand-> update([
                'name'=>$request->name,
            ]);
-                return response()->json(['message' => 'Brand successfully updated.'],200,$brand);
+                return response()->json($brand,200);
        }catch (ModelNotFoundException $exception) {
                 return response()->json(['message' => 'Brand not found'], 404);
        }
