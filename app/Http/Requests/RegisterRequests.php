@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use http\Env\Response;
 use Illuminate\Foundation\Http\FormRequest;
+use function Laravel\Prompts\error;
 
 class RegisterRequests extends FormRequest
 {
@@ -22,10 +24,10 @@ class RegisterRequests extends FormRequest
     public function rules(): array
     {
         return [
-            "email"=> "required|email",
+            "email"=> "required|email|string",
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'password'=>'required|string|min:8',
+            'password'=>'required|string|min:8|regex:/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/',
             'city' => 'required|string|max:255',
             'address' => 'required|string|max:255',
             'zip_code' => 'required|string|max:255',
