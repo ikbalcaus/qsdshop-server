@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('authentication_token', function (Blueprint $table) {
             $table->id();
-            $table->string('token_value');
+            $table->string('token_value',512);
             $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade'); //foreign key
             $table->timestamps();
 
