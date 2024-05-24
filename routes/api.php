@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BrandController;
 use App\Http\Controllers\SizeController;
 use App\Http\Controllers\CategoryController;
 
@@ -35,3 +36,22 @@ Route::get('/categories', [CategoryController::class, 'categories']);
 Route::middleware(\App\Http\Middleware\IsAdminSuperAdmin::class)->post('/addCategory', [CategoryController::class, 'addCategory']);
 Route::middleware(\App\Http\Middleware\IsAdminSuperAdmin::class)->put('/updateCategory', [CategoryController::class, 'updateCategory']);
 Route::middleware(\App\Http\Middleware\IsAdminSuperAdmin::class)->delete('/deleteCategory/{id}', [CategoryController::class, 'deleteCategory']);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Route::get('/brands',[BrandController::class,'brands']);
+Route::middleware(\App\Http\Middleware\IsAdminSuperAdmin::class)->post('/addBrand',[BrandController::class,'addBrand']);
+Route::middleware(\App\Http\Middleware\IsAdminSuperAdmin::class)->put('/updateBrand/{id}',[BrandController::class,'updateBrand']);
+Route::middleware(\App\Http\Middleware\IsAdminSuperAdmin::class)->delete('/deleteBrand/{id}',[BrandController::class,'deleteBrand']);
