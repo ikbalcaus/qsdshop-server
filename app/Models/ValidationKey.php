@@ -13,6 +13,7 @@ class ValidationKey extends Model
     protected $fillable = [
         'user_id',
         'validationKey',
+        'expires_at'
     ];
 
     public function user()

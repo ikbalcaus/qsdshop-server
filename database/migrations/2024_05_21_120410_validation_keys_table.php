@@ -15,8 +15,8 @@ return new class extends Migration {
             $table->id();
             $table->integer('validationKey');
             $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade'); //foreign key
+            $table->timestamp("expires_at")->nullable();
             $table->timestamps();
-
         });
     }
 

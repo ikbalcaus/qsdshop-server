@@ -20,17 +20,22 @@ Route::middleware('auth:api')->post('/refresh', [AuthController::class, 'refresh
 Route::post('/changePassword', [AuthController::class, 'changePassword']);
 
 Route::get('/sizes', [SizeController::class, 'sizes']);
-Route::middleware(\App\Http\Middleware\IsAdminSuperAdmin::class)->post('/addSize', [SizeController::class, 'addSize']);
-Route::middleware(\App\Http\Middleware\IsAdminSuperAdmin::class)->put('/updateSize', [SizeController::class, 'updateSize']);
-Route::middleware(\App\Http\Middleware\IsAdminSuperAdmin::class)->delete('/deleteSize/{id}', [SizeController::class, 'deleteSize']);
-//Iz nekog razloga ne prepoznaje alias adminSuperAdmin, radi jedino ovako sa rutom
+Route::middleware([\App\Http\Middleware\IsAdminSuperAdmin::class])->group(function () {
+    Route::post('/addSize', [SizeController::class, 'addSize']);
+    Route::put('/updateSize', [SizeController::class, 'updateSize']);
+    Route::delete('/deleteSize/{id}', [SizeController::class, 'deleteSize']);
+});//Iz nekog razloga ne prepoznaje alias adminSuperAdmin, radi jedino ovako sa rutom
 
 Route::get('/categories', [CategoryController::class, 'categories']);
-Route::middleware(\App\Http\Middleware\IsAdminSuperAdmin::class)->post('/addCategory', [CategoryController::class, 'addCategory']);
-Route::middleware(\App\Http\Middleware\IsAdminSuperAdmin::class)->put('/updateCategory', [CategoryController::class, 'updateCategory']);
-Route::middleware(\App\Http\Middleware\IsAdminSuperAdmin::class)->delete('/deleteCategory/{id}', [CategoryController::class, 'deleteCategory']);
+Route::middleware([\App\Http\Middleware\IsAdminSuperAdmin::class])->group(function () {
+    Route::post('/addCategory', [CategoryController::class, 'addCategory']);
+    Route::put('/updateCategory', [CategoryController::class, 'updateCategory']);
+    Route::delete('/deleteCategory/{id}', [CategoryController::class, 'deleteCategory']);
+});
 
 Route::get('/brands',[BrandController::class,'brands']);
-Route::middleware(\App\Http\Middleware\IsAdminSuperAdmin::class)->post('/addBrand',[BrandController::class,'addBrand']);
-Route::middleware(\App\Http\Middleware\IsAdminSuperAdmin::class)->put('/updateBrand/{id}',[BrandController::class,'updateBrand']);
-Route::middleware(\App\Http\Middleware\IsAdminSuperAdmin::class)->delete('/deleteBrand/{id}',[BrandController::class,'deleteBrand']);
+Route::middleware([\App\Http\Middleware\IsAdminSuperAdmin::class])->group(function () {
+    Route::post('/addBrand', [BrandController::class, 'addBrand']);
+    Route::put('/updateBrand/{id}', [BrandController::class, 'updateBrand']);
+    Route::delete('/deleteBrand/{id}', [BrandController::class, 'deleteBrand']);
+});

@@ -57,6 +57,7 @@ class AuthController extends Controller
         if ($request->has('validation_key')) {
             $validationKey = ValidationKey::where('user_id', $user->id)
                 ->where('validationKey', $request->input('validation_key'))
+                ->where('expires_at','>',Carbon::now())
                 ->first();
             if (!$validationKey) {
                 return response()->json(['message' => 'Invalid validation key'], 400);
@@ -72,7 +73,8 @@ class AuthController extends Controller
             $validationKey = rand(100000, 999999);
             $key = new ValidationKey([
                 'user_id' => $user->id,
-                'validationKey' => $validationKey
+                'validationKey' => $validationKey,
+                'expires_at'=>Carbon::now()->addMinutes(10)
             ]);
             $key->save();
             Mail::to($user->email)->send(new ValidationMail($validationKey));
