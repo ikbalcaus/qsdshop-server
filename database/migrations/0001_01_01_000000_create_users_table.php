@@ -16,13 +16,13 @@ return new class extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->string('email')->unique();
-            $table->enum('role', [1,2,3])->comment('1 - superAdmin, 2 - admin, 3 - customer')->default(1);
-            $table->boolean('status');
+            $table->enum('role', [1,2,3])->comment('1 - superAdmin, 2 - admin, 3 - customer')->default(3);
+            $table->boolean('status')->default(true);
             $table->string('password');
-            $table->string('city');
-            $table->string('address');
-            $table->string('zip_code');
-            $table->string('phone');
+            $table->string('city')->nullable();
+            $table->string('address')->nullable();
+            $table->string('zip_code')->nullable();
+            $table->string('phone')->nullable();
             $table->timestamps();
         });
         //test

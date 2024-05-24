@@ -28,6 +28,20 @@ class User extends Authenticatable implements JWTSubject
         'phone'
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($user) {
+            if (is_null($user->role)) {
+                $user->role = 3;
+            }
+            if (is_null($user->status)) {
+                $user->status = true;
+            }
+        });
+    }
+
     protected $hidden = [
         'password'
     ];

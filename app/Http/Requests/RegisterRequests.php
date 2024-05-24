@@ -27,12 +27,12 @@ class RegisterRequests extends FormRequest
             'last_name' => 'required|string|alpha|max:255',
             'password' => 'required|string|min:8|regex:/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/',
             'confirm_password' => 'required|string|same:password',
-            'city' => 'required|string|alpha|max:255',
-            'address' => 'required|string|max:255',
-            'zip_code' => 'required|string|regex:/^\d{5}(-\d{4})?$/',
-            'phone' => 'required|string|regex:/^[0-9]+$/|min:10|max:15',
-            'role' => 'required|in:1,2,3',
-            'status' => 'required|boolean'
+            'city' => 'string|alpha|max:255',
+            'address' => 'string|max:255',
+            'zip_code' => 'string|regex:/^\d{5}(-\d{4})?$/',
+            'phone' => 'string|regex:/^[0-9]+$/|min:10|max:15',
+            'role' => 'in:1,2,3',
+            'status' => 'boolean'
         ];
     }
 
