@@ -1,8 +1,5 @@
 <?php
-
 namespace App\Http\Controllers;
-
-
 use App\Http\Requests\ChangePasswordRequest;
 use App\Http\Requests\LoginRequests;
 use App\Http\Requests\RegisterRequests;
@@ -22,14 +19,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Testing\Fluent\Concerns\Has;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use function Illuminate\Support\Facades\Http;
-
 class AuthController extends Controller
 {
     public function register(RegisterRequests $request): \Illuminate\Http\JsonResponse
     {
 //dodati registraciju roleova i status za usere
-
-
         if (User::where('email', $request->input('email'))->exists()) {
             return response()->json(['message' => 'Email is already used'], 400);
         }
@@ -48,13 +42,11 @@ class AuthController extends Controller
             'created_at' => now(),
             'updated_at' => now(),
         ]);
-
         return response()->json([
             'message' => 'User registered successfully',
             'user' => $user,
         ], 200);
     }
-
     public function login(LoginRequests $request): \Illuminate\Http\JsonResponse
     {
         $user = User::where('email', $request->input('email'))->first();
@@ -66,39 +58,17 @@ class AuthController extends Controller
             $validationKey = ValidationKey::where('user_id', $user->id)
                 ->where('validationKey', $request->input('validation_key'))
                 ->first();
-
             if (!$validationKey) {
                 return response()->json(['message' => 'Invalid validation key'], 400);
             }
             $validationKey->delete();
             $token = JWTAuth::fromUser($user);
-
-            // Dodatno uradim duplu prijavu poslije, ovo nije najbolja praksa?
-
-            //pravim da ne moze dupla prijava
-            /*$existingToken = DB::table('authentication_token')
-                ->where('user_id', $user->id)
-                ->first();*/
-
-            /*if ($existingToken) {
-                return response()->json(['message' => 'User is already logged in','token_value'=>$token], 400);
-            }*/
-            //ovaj token bi se trebao spremati u AuthenticationToken tabelu?
-            //da li da za ovo koristimo trigger, kada se prijavimo spremamo, kada se odjavljujemo brisemo token?
-            //to cu napraviti ovako pa kasnije vidimo za triggere
-
-            /* AuthenticationToken::create([
-                'user_id' => $user->id,
-                 'token_value'=>$token,
-             ]);*/
-
             return response()->json([
                 'message' => 'User logged in successfully',
                 'access_token' => $token,
                 'token_type' => 'Bearer'
             ], 200);
         } else {
-
             $validationKey = rand(100000, 999999);
             $key = new ValidationKey([
                 'user_id' => $user->id,
@@ -110,19 +80,9 @@ class AuthController extends Controller
             return response()->json(['message' => 'A validation key has been sent to your email. Please provide the key to complete the login.',], 200);
         }
     }
-
-//test za prijavljenog usera
-    public function profile(): \Illuminate\Http\JsonResponse
-    {
-        return response()->json(auth()->user());
-    }
-
-
     public function logout(Request $request): \Illuminate\Http\JsonResponse
     {
-
         $token = $request->bearerToken();
-
         if (!$token) {
             return response()->json(['message' => 'Token not provided'], 400);
         }
@@ -135,43 +95,24 @@ class AuthController extends Controller
         } catch (\Tymon\JWTAuth\Exceptions\JWTException $e) {
             return response()->json(['message' => 'Failed to invalidate the token.', 'error' => $e->getMessage()], 500);
         }
-
-
-        //Ovde bi trebali brisati token iz AuthenticationToken tabele?
-        /*$authToken = AuthenticationToken::where('token_value', $token)->first();
-        if ($authToken) {
-            $authToken->delete();
-        }*/
-
-        //JWTAuth::invalidate($token);
-
-
     }
-
     public function changePassword(ChangePasswordRequest $request): \Illuminate\Http\JsonResponse
     {
         $token = $request->bearerToken();
-
         if (!$token) {
             return response()->json(['message' => 'User not authenticated'], 401);
         }
-
         $user = JWTAuth::parseToken($token)->authenticate();
-
         if (!Hash::check($request->input('current_password'), $user->password)) {
             return response()->json(['message' => 'Current password is incorrect!'], 400);
         }
-
         $user->password = Hash::make($request->input('new_password'));
         $user->save();
-
         return response()->json(['message' => 'Password updated successfully'], 200);
-
     }
 
     public function requestValidationKey(ValidationKeyRequest $request): \Illuminate\Http\JsonResponse
     {
-
         $user = DB::table('users')->where('email', $request->input('email'))->first();
         if (!$user) {
             return response()->json(['message' => 'User not found'], 404);
@@ -196,13 +137,11 @@ class AuthController extends Controller
             ->where('user_id', $user->id)->where('validationKey', $request->key)->first();
         if (!$authKey) {
             return response()->json(['message' => "Invalid validation key"], 400);
-
         }
         $user->password = Hash::make($request->password);
         $user->save();
         return response()->json(['message' => "Password reset successfully"], 200);
     }
-
     public function refresh(Request $request)
     {
         $user = Auth::guard('api')->user();
@@ -210,9 +149,7 @@ class AuthController extends Controller
             return response()->json(['error' => 'User not authenticated'], 401);
         }
         JWTAuth::parseToken()->invalidate();
-
         $token = JWTAuth::fromUser($user);
-
         return response()->json([
             'user' => [
                 'id' => $user->id,
