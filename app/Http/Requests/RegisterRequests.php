@@ -2,9 +2,7 @@
 
 namespace App\Http\Requests;
 
-use http\Env\Response;
 use Illuminate\Foundation\Http\FormRequest;
-use function Laravel\Prompts\error;
 
 class RegisterRequests extends FormRequest
 {
