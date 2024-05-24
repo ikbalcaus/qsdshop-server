@@ -28,6 +28,7 @@ class RegisterRequests extends FormRequest
             'first_name' => 'required|string|alpha|max:255',
             'last_name' => 'required|string|alpha|max:255',
             'password'=>'required|string|min:8|regex:/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/',
+            'confirm_password' => 'required|string|same:password',
             'city' => 'required|string|alpha|max:255',
             'address' => 'required|string|max:255',
             'zip_code' => 'required|string|regex:/^\d{5}(-\d{4})?$/',
@@ -40,6 +41,7 @@ class RegisterRequests extends FormRequest
     {
         return [
             'password.regex' => 'Password must contain at least one letter, one number, and one special character.',
+            'confirm_password.regex' => 'Confirm password must be same as password.',
         ];
     }
 }
