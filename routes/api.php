@@ -1,8 +1,41 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BrandController;
+use App\Http\Controllers\SizeController;
+use App\Http\Controllers\CategoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+    return "test";
+})->middleware('auth:api');
+
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
+Route::middleware('auth:api')->post('/logout', [AuthController::class, 'logout']);
+Route::post('/requestValidationKey', [AuthController::class, 'requestValidationKey']);
+Route::post('/resetPassword', [AuthController::class, 'resetPassword']);
+Route::middleware('auth:api')->post('/refresh', [AuthController::class, 'refresh']);
+Route::post('/changePassword', [AuthController::class, 'changePassword']);
+
+Route::get('/sizes', [SizeController::class, 'sizes']);
+Route::middleware([\App\Http\Middleware\IsAdminSuperAdmin::class])->group(function () {
+    Route::post('/addSize', [SizeController::class, 'addSize']);
+    Route::put('/updateSize', [SizeController::class, 'updateSize']);
+    Route::delete('/deleteSize/{id}', [SizeController::class, 'deleteSize']);
+});//Iz nekog razloga ne prepoznaje alias adminSuperAdmin, radi jedino ovako sa rutom
+
+Route::get('/categories', [CategoryController::class, 'categories']);
+Route::middleware([\App\Http\Middleware\IsAdminSuperAdmin::class])->group(function () {
+    Route::post('/addCategory', [CategoryController::class, 'addCategory']);
+    Route::put('/updateCategory', [CategoryController::class, 'updateCategory']);
+    Route::delete('/deleteCategory/{id}', [CategoryController::class, 'deleteCategory']);
+});
+
+Route::get('/brands',[BrandController::class,'brands']);
+Route::middleware([\App\Http\Middleware\IsAdminSuperAdmin::class])->group(function () {
+    Route::post('/addBrand', [BrandController::class, 'addBrand']);
+    Route::put('/updateBrand/{id}', [BrandController::class, 'updateBrand']);
+    Route::delete('/deleteBrand/{id}', [BrandController::class, 'deleteBrand']);
+});

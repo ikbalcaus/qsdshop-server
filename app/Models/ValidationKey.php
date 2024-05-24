@@ -5,18 +5,21 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class AuthenticationToken extends Model
+class ValidationKey extends Model
 {
     use HasFactory;
 
-    protected $table = 'authentication_token';
+    protected $table = 'validation_keys';
     protected $fillable = [
         'user_id',
-        'token_value',
+        'validationKey',
+        'expires_at'
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+
+
 }
