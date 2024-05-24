@@ -32,6 +32,6 @@ Route::middleware(\App\Http\Middleware\IsAdminSuperAdmin::class)->delete('/delet
 
 
 Route::get('/categories', [CategoryController::class, 'categories']);
-Route::post('/addCategory', [CategoryController::class, 'addCategory']);
-Route::put('/updateCategory', [CategoryController::class, 'updateCategory']);
-Route::delete('/deleteCategory/{id}', [CategoryController::class, 'deleteCategory']);
+Route::middleware(\App\Http\Middleware\IsAdminSuperAdmin::class)->post('/addCategory', [CategoryController::class, 'addCategory']);
+Route::middleware(\App\Http\Middleware\IsAdminSuperAdmin::class)->put('/updateCategory', [CategoryController::class, 'updateCategory']);
+Route::middleware(\App\Http\Middleware\IsAdminSuperAdmin::class)->delete('/deleteCategory/{id}', [CategoryController::class, 'deleteCategory']);
