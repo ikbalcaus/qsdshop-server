@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\SizeController;
+use App\Http\Controllers\CategoryController;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,3 +29,9 @@ Route::middleware(\App\Http\Middleware\IsAdminSuperAdmin::class)->post('/addSize
 Route::middleware(\App\Http\Middleware\IsAdminSuperAdmin::class)->put('/updateSize', [SizeController::class, 'updateSize']);
 Route::middleware(\App\Http\Middleware\IsAdminSuperAdmin::class)->delete('/deleteSize/{id}', [SizeController::class, 'deleteSize']);
 //Iz nekog razloga ne prepoznaje alias adminSuperAdmin, radi jedino ovako sa rutom
+
+
+Route::get('/categories', [CategoryController::class, 'categories']);
+Route::middleware(\App\Http\Middleware\IsAdminSuperAdmin::class)->post('/addCategory', [CategoryController::class, 'addCategory']);
+Route::middleware(\App\Http\Middleware\IsAdminSuperAdmin::class)->put('/updateCategory', [CategoryController::class, 'updateCategory']);
+Route::middleware(\App\Http\Middleware\IsAdminSuperAdmin::class)->delete('/deleteCategory/{id}', [CategoryController::class, 'deleteCategory']);
