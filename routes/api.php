@@ -4,6 +4,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\SizeController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -33,9 +35,12 @@ Route::middleware([\App\Http\Middleware\IsAdminSuperAdmin::class])->group(functi
     Route::delete('/deleteCategory/{id}', [CategoryController::class, 'deleteCategory']);
 });
 
-Route::get('/brands',[BrandController::class,'brands']);
+Route::get('/brands', [BrandController::class, 'brands']);
 Route::middleware([\App\Http\Middleware\IsAdminSuperAdmin::class])->group(function () {
     Route::post('/addBrand', [BrandController::class, 'addBrand']);
     Route::put('/updateBrand/{id}', [BrandController::class, 'updateBrand']);
     Route::delete('/deleteBrand/{id}', [BrandController::class, 'deleteBrand']);
 });
+
+Route::get('/getProducts', [ProductController::class, 'getProducts']);
+Route::get('/getProduct/{id}', [ProductController::class, 'getProduct']);
