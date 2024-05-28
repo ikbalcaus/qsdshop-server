@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\ColorController;
 use App\Http\Controllers\SizeController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
@@ -52,3 +53,10 @@ Route::middleware([\App\Http\Middleware\IsAdminSuperAdmin::class])->group(functi
 Route::post('/rateProduct', [ProductController::class, 'rateProduct']);
 Route::post('/editRateProduct', [ProductController::class, 'editRateProduct']);
 Route::delete('/deleteImage/{id}', [ProductController::class, 'deleteImage']);
+
+Route::get('/colors',[ColorController::class,'colors']);
+Route::middleware([\App\Http\Middleware\IsAdminSuperAdmin::class])->group(function () {
+Route::post('/addColor',[ColorController::class,'addColor']);
+Route::put('/updateColor/{id}',[ColorController::class,'updateColor']);
+Route::delete('/deleteColor/{id}',[ColorController::class,'deleteColor']);
+});
