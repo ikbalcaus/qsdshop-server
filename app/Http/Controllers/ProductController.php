@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductRequest;
 use App\Http\Requests\RateProductRequest;
+use App\Models\Image;
 use App\Models\Product;
 use App\Models\Rating;
 use Illuminate\Http\JsonResponse;
@@ -78,6 +79,9 @@ class ProductController extends Controller
             'brand_id' => $request->brand_id,
             'color_id' => $request->color_id,
         ]);
+        if ($request->hasFile('images')) {
+            $this->storeImage($request, $product);
+        }
         $product->categories()->sync($request->categories);
         $product->sizes()->sync($request->sizes);
         return response()->json(['message' => 'Product updated successfully'], 200);
@@ -113,9 +117,22 @@ class ProductController extends Controller
         return response()->json(['message' => 'Rating saved successfully.'], 200);
     }
 
-    public function deleteImage()
+    public function deleteImage(Request $request)
     {
-
+        if (empty($request->id)) {
+            return response()->json(['message' => 'Field is required'], 400);
+        }
+        $image = Image::find($request->id);
+        if (!$image) {
+            return response()->json(['message' => 'Image not found'], 404);
+        }
+        $product_id = $image->product_id;
+        $number = Image::where('product_id', $product_id)->count();
+        if ($number == 1) {
+            return response()->json(['message' => 'Cannot delete the last image'], 403);
+        }
+        $image->delete();
+        return response()->json(['message' => "Image successfully deleted"], 200);
     }
 
     public function editRateProduct(Request $request)

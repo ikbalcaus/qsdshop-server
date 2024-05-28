@@ -44,8 +44,11 @@ Route::middleware([\App\Http\Middleware\IsAdminSuperAdmin::class])->group(functi
 
 Route::get('/getProducts', [ProductController::class, 'getProducts']);
 Route::get('/getProduct/{id}', [ProductController::class, 'getProduct']);
-Route::post('/addProduct', [ProductController::class, 'addProduct']);
-Route::post('/updateProduct', [ProductController::class, 'updateProduct']);
-Route::delete('/deleteProduct/{id}', [ProductController::class, 'deleteProduct']);
+Route::middleware([\App\Http\Middleware\IsAdminSuperAdmin::class])->group(function () {
+    Route::post('/addProduct', [ProductController::class, 'addProduct']);
+    Route::post('/updateProduct', [ProductController::class, 'updateProduct']);
+    Route::delete('/deleteProduct/{id}', [ProductController::class, 'deleteProduct']);
+});
 Route::post('/rateProduct', [ProductController::class, 'rateProduct']);
 Route::post('/editRateProduct', [ProductController::class, 'editRateProduct']);
+Route::delete('/deleteImage/{id}', [ProductController::class, 'deleteImage']);
