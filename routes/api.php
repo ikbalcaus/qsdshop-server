@@ -42,10 +42,8 @@ Route::middleware([\App\Http\Middleware\IsAdminSuperAdmin::class])->group(functi
 });
 
 Route::get('/colors',[ColorController::class,'colors']);
+Route::middleware([\App\Http\Middleware\IsAdminSuperAdmin::class])->group(function () {
 Route::post('/addColor',[ColorController::class,'addColor']);
 Route::put('/updateColor/{id}',[ColorController::class,'updateColor']);
 Route::delete('/deleteColor/{id}',[ColorController::class,'deleteColor']);
-
-//Route::middleware([\App\Http\Middleware\IsAdminSuperAdmin::class])->group(function () {
-
-//});
+});
