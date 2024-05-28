@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 
 use App\Http\Requests\ProductRequest;
+use App\Http\Requests\RateProductRequest;
 use App\Models\Product;
+use App\Models\Rating;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -61,9 +64,23 @@ class ProductController extends Controller
         return response()->json(['message' => 'Product added successfully'], 200);
     }
 
-    public function updateProduct()
+    public function updateProduct(ProductRequest $request)
     {
-
+        $product = Product::find($request->id);
+        if (!$product) {
+            return response()->json(['message' => 'No product was found with id: ' . $request->id], 400);
+        }
+        $product->update([
+            'name' => $request->name,
+            'price' => $request->price,
+            'gender' => $request->gender,
+            'description' => $request->description,
+            'brand_id' => $request->brand_id,
+            'color_id' => $request->color_id,
+        ]);
+        $product->categories()->sync($request->categories);
+        $product->sizes()->sync($request->sizes);
+        return response()->json(['message' => 'Product updated successfully'], 200);
     }
 
     public function deleteProduct(Request $request)
@@ -82,9 +99,18 @@ class ProductController extends Controller
         return response()->json(['message' => "Product was successfully deleted"], 200);
     }
 
-    public function rateProduct()
+    public function rateProduct(RateProductRequest $request)
     {
-
+        if (empty($request->value) || empty($request->product_id)) {
+            return response()->json(['message' => 'Fields are required'], 400);
+        }
+        $user = Auth::guard('api')->user();
+        $rating = Rating::create([
+            'value' => $request->value,
+            'product_id' => $request->product_id,
+            'user_id' => $user->id
+        ]);
+        return response()->json(['message' => 'Rating saved successfully.'], 200);
     }
 
     public function deleteImage()
@@ -92,8 +118,21 @@ class ProductController extends Controller
 
     }
 
-    public function editRateProduct()
+    public function editRateProduct(Request $request)
     {
+        if (empty($request->id)) {
+            return response()->json(['message' => 'Field is required'], 400);
+        }
+        $rating = Rating::find($request->id);
+        if (!$rating) {
+            return response()->json(['message' => 'No rating was found with id: ' . $request->id], 400);
+        }
+        $rating->update([
+            'id' => $request->id,
+            'value' => $request->value,
+            'description' => $request->descripton
+        ]);
+        return response()->json(['message' => 'Rating updated successfully'], 200);
 
     }
 }
