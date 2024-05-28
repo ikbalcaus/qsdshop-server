@@ -52,9 +52,12 @@ Route::delete('/deleteColor/{id}',[ColorController::class,'deleteColor']);
 //dodaj middleware
 Route::get('/getUser/{id}',[UserController::class,'getUser']);
 Route::get('/users',[UserController::class,'users']);
-Route::put('/updateUser',[UserController::class,'updateUser']);
-Route::delete('/deleteUser',[UserController::class,'deleteUser']);
-Route::post('/banUser',[UserController::class,'banUser']);
-Route::delete('/banUser',[UserController::class,'banUser']);
-
+Route::middleware('auth:api')->group(function () {
+    Route::put('/updateUser', [UserController::class, 'updateUser']);
+    Route::delete('/deleteUser', [UserController::class, 'deleteUser']);
+});
+Route::middleware([\App\Http\Middleware\IsAdminSuperAdmin::class])->group(function () {
+    Route::post('/banUser', [UserController::class, 'banUser']);
+    Route::put('/updateRole', [UserController::class, 'updateRole']);
+});
 

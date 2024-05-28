@@ -48,4 +48,26 @@ class UserController extends Controller
         $user->delete();
         return response()->json(['message'=>'User deleted successfully.'],200);
      }
+     public function banUser(UserRequest $request){
+        $id=$request->id;
+        $user=User::find($id);
+         if(!$user){
+             return response()->json(['error'=>'User Not Found'],404);
+         }
+         $user->update([
+             'status'=>0,
+         ]);
+         $message="User: {$user->id} {$user->first_name} {$user->last_name} has been banned.";
+         return response()->json(['message'=>$message],200);
+     }
+     public function updateRole(UserRequest $request){
+        $id=$request->id;
+         $user=User::find($id);
+         if(!$user){
+             return response()->json(['error'=>'User Not Found'],404);
+         }
+         $user->update(['role'=>$request->input('role')]);
+         return response()->json(['message'=>'User role successfully updated.']);
+     }
+
 }

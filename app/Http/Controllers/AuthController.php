@@ -18,7 +18,7 @@ use App\Mail\ValidationMail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Testing\Fluent\Concerns\Has;
 use Tymon\JWTAuth\Facades\JWTAuth;
-use function Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Http;
 class AuthController extends Controller
 {
     public function register(RegisterRequests $request): \Illuminate\Http\JsonResponse
@@ -50,7 +50,9 @@ class AuthController extends Controller
     public function login(LoginRequests $request): \Illuminate\Http\JsonResponse
     {
         $user = User::where('email', $request->input('email'))->first();
-
+        if(!$user->status){
+            return response()->json(['error'=>'U have been banned.'],403);
+        }
         if (!$user || !Hash::check($request->input('password'), $user->password)) {
             return response()->json(['message' => 'Invalid credentials'], 401);
         }
