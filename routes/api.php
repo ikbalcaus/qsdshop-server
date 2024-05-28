@@ -7,6 +7,7 @@ use App\Http\Controllers\SizeController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -36,7 +37,7 @@ Route::middleware([\App\Http\Middleware\IsAdminSuperAdmin::class])->group(functi
     Route::delete('/deleteCategory/{id}', [CategoryController::class, 'deleteCategory']);
 });
 
-Route::get('/brands', [BrandController::class, 'brands']);
+Route::get('/brands',[BrandController::class,'brands']);
 Route::middleware([\App\Http\Middleware\IsAdminSuperAdmin::class])->group(function () {
     Route::post('/addBrand', [BrandController::class, 'addBrand']);
     Route::put('/updateBrand/{id}', [BrandController::class, 'updateBrand']);
@@ -60,3 +61,16 @@ Route::post('/addColor',[ColorController::class,'addColor']);
 Route::put('/updateColor/{id}',[ColorController::class,'updateColor']);
 Route::delete('/deleteColor/{id}',[ColorController::class,'deleteColor']);
 });
+
+//dodaj middleware
+Route::get('/getUser/{id}',[UserController::class,'getUser']);
+Route::get('/users',[UserController::class,'users']);
+Route::middleware('auth:api')->group(function () {
+    Route::put('/updateUser', [UserController::class, 'updateUser']);
+    Route::delete('/deleteUser', [UserController::class, 'deleteUser']);
+});
+Route::middleware([\App\Http\Middleware\IsAdminSuperAdmin::class])->group(function () {
+    Route::post('/banUser', [UserController::class, 'banUser']);
+    Route::put('/updateRole', [UserController::class, 'updateRole']);
+});
+
