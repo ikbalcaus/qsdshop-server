@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\ColorController;
 use App\Http\Controllers\SizeController;
 use App\Http\Controllers\CategoryController;
 use Illuminate\Http\Request;
@@ -38,4 +39,11 @@ Route::middleware([\App\Http\Middleware\IsAdminSuperAdmin::class])->group(functi
     Route::post('/addBrand', [BrandController::class, 'addBrand']);
     Route::put('/updateBrand/{id}', [BrandController::class, 'updateBrand']);
     Route::delete('/deleteBrand/{id}', [BrandController::class, 'deleteBrand']);
+});
+
+Route::get('/colors',[ColorController::class,'colors']);
+Route::middleware([\App\Http\Middleware\IsAdminSuperAdmin::class])->group(function () {
+Route::post('/addColor',[ColorController::class,'addColor']);
+Route::put('/updateColor/{id}',[ColorController::class,'updateColor']);
+Route::delete('/deleteColor/{id}',[ColorController::class,'deleteColor']);
 });
