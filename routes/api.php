@@ -7,6 +7,7 @@ use App\Http\Controllers\SizeController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\FilterController;
+use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -76,3 +77,6 @@ Route::middleware([\App\Http\Middleware\IsAdminSuperAdmin::class])->group(functi
 
 Route::post('/search', [FilterController::class, 'search']);
 Route::get('/filterProducts', [FilterController::class, 'filterProducts']);
+
+Route::middleware('auth:api')->get('/getFavorites', [FavoriteController::class, 'getFavorites']);
+Route::middleware('auth:api')->post('/handleFavorite', [FavoriteController::class, 'handleFavorite']);
