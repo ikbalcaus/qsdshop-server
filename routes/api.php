@@ -6,7 +6,8 @@ use App\Http\Controllers\ColorController;
 use App\Http\Controllers\SizeController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
-
+use App\Http\Controllers\FilterController;
+use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -37,7 +38,7 @@ Route::middleware([\App\Http\Middleware\IsAdminSuperAdmin::class])->group(functi
     Route::delete('/deleteCategory/{id}', [CategoryController::class, 'deleteCategory']);
 });
 
-Route::get('/brands',[BrandController::class,'brands']);
+Route::get('/brands', [BrandController::class, 'brands']);
 Route::middleware([\App\Http\Middleware\IsAdminSuperAdmin::class])->group(function () {
     Route::post('/addBrand', [BrandController::class, 'addBrand']);
     Route::put('/updateBrand/{id}', [BrandController::class, 'updateBrand']);
@@ -51,20 +52,20 @@ Route::middleware([\App\Http\Middleware\IsAdminSuperAdmin::class])->group(functi
     Route::post('/updateProduct', [ProductController::class, 'updateProduct']);
     Route::delete('/deleteProduct/{id}', [ProductController::class, 'deleteProduct']);
 });
-Route::post('/rateProduct', [ProductController::class, 'rateProduct']);
+Route::middleware('auth:api')->post('/rateProduct', [ProductController::class, 'rateProduct']);
 Route::post('/editRateProduct', [ProductController::class, 'editRateProduct']);
 Route::delete('/deleteImage/{id}', [ProductController::class, 'deleteImage']);
 
-Route::get('/colors',[ColorController::class,'colors']);
+Route::get('/colors', [ColorController::class, 'colors']);
 Route::middleware([\App\Http\Middleware\IsAdminSuperAdmin::class])->group(function () {
-Route::post('/addColor',[ColorController::class,'addColor']);
-Route::put('/updateColor/{id}',[ColorController::class,'updateColor']);
-Route::delete('/deleteColor/{id}',[ColorController::class,'deleteColor']);
+    Route::post('/addColor', [ColorController::class, 'addColor']);
+    Route::put('/updateColor/{id}', [ColorController::class, 'updateColor']);
+    Route::delete('/deleteColor/{id}', [ColorController::class, 'deleteColor']);
 });
 
 //dodaj middleware
-Route::get('/getUser/{id}',[UserController::class,'getUser']);
-Route::get('/users',[UserController::class,'users']);
+Route::get('/getUser/{id}', [UserController::class, 'getUser']);
+Route::get('/users', [UserController::class, 'users']);
 Route::middleware('auth:api')->group(function () {
     Route::put('/updateUser', [UserController::class, 'updateUser']);
     Route::delete('/deleteUser', [UserController::class, 'deleteUser']);
@@ -74,3 +75,8 @@ Route::middleware([\App\Http\Middleware\IsAdminSuperAdmin::class])->group(functi
     Route::put('/updateRole', [UserController::class, 'updateRole']);
 });
 
+Route::post('/search', [FilterController::class, 'search']);
+Route::get('/filterProducts', [FilterController::class, 'filterProducts']);
+
+Route::middleware('auth:api')->get('/getFavorites', [FavoriteController::class, 'getFavorites']);
+Route::middleware('auth:api')->post('/handleFavorite', [FavoriteController::class, 'handleFavorite']);
