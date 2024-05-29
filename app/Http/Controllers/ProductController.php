@@ -108,7 +108,7 @@ class ProductController extends Controller
         if (empty($request->value) || empty($request->product_id)) {
             return response()->json(['message' => 'Fields are required'], 400);
         }
-        $user = Auth::guard('api')->user();
+        $user = Auth::user();
         $rating = Rating::create([
             'value' => $request->value,
             'product_id' => $request->product_id,
