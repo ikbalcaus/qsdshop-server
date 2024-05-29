@@ -75,4 +75,4 @@ Route::middleware([\App\Http\Middleware\IsAdminSuperAdmin::class])->group(functi
 });
 
 Route::post('/search', [FilterController::class, 'search']);
-
+Route::get('/filterProducts', [FilterController::class, 'filterProducts']);

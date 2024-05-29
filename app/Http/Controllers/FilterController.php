@@ -9,7 +9,6 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
-
 class FilterController extends Controller
 {
     public function search(FilterRequest $request)
@@ -49,8 +48,33 @@ class FilterController extends Controller
         return response()->json($result);
     }
 
-    public function filterProducts()
+    public function filterProducts(Request $request)
     {
+        $query = Product::query();
+        $filters = [
+            'min_price' => 'price',
+            'max_price' => 'price',
+            'brands' => 'brand_id',
+            'colors' => 'color_id',
+            'genders' => 'gender',
+            'sizes' => 'product_sizes.size_id',
+            'categories' => 'product_categories.category_id',
+        ];
 
+        foreach ($filters as $filter => $column) {
+            if ($request->has($filter)) {
+                if ($filter === 'sizes' || $filter === 'categories') {
+                    $query->join($filter === 'sizes' ? 'product_sizes' : 'product_categories', 'products.id',
+                        '=', $filter === 'sizes' ? 'product_sizes.product_id' : 'product_categories.product_id')
+                        ->whereIn($column, $request->$filter);
+                } else {
+                    $query->where($column, $filter === 'min_price' ? '>=' : '<=', $request->$filter);
+                }
+            }
+        }
+
+        $query->with('categories', 'brands', 'color', 'sizes');
+        $products = $query->get();
+        return response()->json($products);
     }
 }
