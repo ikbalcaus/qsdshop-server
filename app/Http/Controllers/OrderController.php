@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CommonRequest;
 use App\Http\Requests\OrderRequest;
 use App\Models\Order;
 use App\Models\User;
@@ -15,7 +16,7 @@ class OrderController extends Controller
         $orders = Order::all();
         return response()->json($orders);
     }
-    public function getOrdersPerUser(OrderRequest $request ){
+    public function getOrdersPerUser(CommonRequest $request ){
         $userId = $request->input('id');
         $user=User::find($userId);
         if (!$user){
@@ -29,7 +30,10 @@ class OrderController extends Controller
         if(!$order){
             return response()->json(['message' => 'Order not found.'], 404);
         }
-        $order->update($request->validated());
+        $order->update([
+            'status' => $request->input('status'),
+            'comment' => $request->input('comment',$order->comment)
+        ]);
         return response()->json($order,200);
     }
 }
