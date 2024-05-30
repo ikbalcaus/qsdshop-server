@@ -84,4 +84,7 @@ Route::middleware('auth:api')->post('/handleFavorite', [FavoriteController::clas
 
 Route::get('/getDiscounts', [DiscountController::class, 'getDiscounts']);
 Route::get('/getUpcomingDiscounts', [DiscountController::class, 'getUpcomingDiscounts']);
-Route::post('addDiscount', [DiscountController::class, 'addDiscount']);
+Route::middleware([\App\Http\Middleware\IsAdminSuperAdmin::class])->group(function () {
+    Route::post('addDiscount', [DiscountController::class, 'addDiscount']);
+    Route::delete('/deleteDiscount/{id}', [DiscountController::class, 'deleteDiscount']);
+});

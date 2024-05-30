@@ -68,8 +68,16 @@ class DiscountController extends Controller
         return response()->json(['message' => 'Discount successfully added.'], 200);
     }
 
-    public function deleteDiscount()
+    public function deleteDiscount(Request $request)
     {
-
+        if (empty($request->id)) {
+            return response()->json(['message' => 'Field is required'], 400);
+        }
+        $discount = Discount::find($request->id);
+        if (!$discount) {
+            return response()->json(['message' => 'Discount not found'], 404);
+        }
+        $discount->delete();
+        return response()->json(['message' => 'Discount successfully deleted.'], 200);
     }
 }
