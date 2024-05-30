@@ -9,6 +9,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\FilterController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\DiscountController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -80,3 +81,7 @@ Route::get('/filterProducts', [FilterController::class, 'filterProducts']);
 
 Route::middleware('auth:api')->get('/getFavorites', [FavoriteController::class, 'getFavorites']);
 Route::middleware('auth:api')->post('/handleFavorite', [FavoriteController::class, 'handleFavorite']);
+
+Route::get('/getDiscounts', [DiscountController::class, 'getDiscounts']);
+Route::get('/getUpcomingDiscounts', [DiscountController::class, 'getUpcomingDiscounts']);
+Route::post('addDiscount', [DiscountController::class, 'addDiscount']);

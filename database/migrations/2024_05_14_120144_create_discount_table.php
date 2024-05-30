@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -13,10 +12,11 @@ return new class extends Migration
     {
         Schema::create('discount', function (Blueprint $table) {
             $table->id();
-            $table->string('discountName');
-            $table->decimal('discountValue',8,2);
-            $table->dateTime('validFrom');
-            $table->dateTime('validTo');
+            $table->string('name');
+            $table->decimal('discount', 8, 2);
+            $table->dateTime('valid_from');
+            $table->dateTime('valid_to');
+            $table->dateTime('deleted_at')->nullable();
             $table->timestamps();
         });
     }
