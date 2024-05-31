@@ -22,7 +22,6 @@ class Product extends Model
         'description',
         'total_rating',
         'average_rating',
-        'is_favorite',
         'brand_id',
         'color_id',
     ];
@@ -76,6 +75,7 @@ class Product extends Model
     {
         return $this->belongsToMany(Size::class, 'product_sizes');
     }
+
     public function discounts()
     {
         return $this->belongsToMany(Discount::class, 'product_discount', 'product_id', 'discount_id');

@@ -14,7 +14,9 @@ class Favorite extends Model
 
 
     protected $table = 'favorites';
-
+    protected $fillable = [
+        'is_favorite',
+    ];
 
     public function user(): HasOne
     {
