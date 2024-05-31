@@ -10,6 +10,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\FilterController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\DiscountController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -81,6 +82,13 @@ Route::get('/filterProducts', [FilterController::class, 'filterProducts']);
 
 Route::middleware('auth:api')->get('/getFavorites', [FavoriteController::class, 'getFavorites']);
 Route::middleware('auth:api')->post('/handleFavorite', [FavoriteController::class, 'handleFavorite']);
+
+Route::get('/getDiscounts', [DiscountController::class, 'getDiscounts']);
+Route::get('/getUpcomingDiscounts', [DiscountController::class, 'getUpcomingDiscounts']);
+Route::middleware([\App\Http\Middleware\IsAdminSuperAdmin::class])->group(function () {
+    Route::post('addDiscount', [DiscountController::class, 'addDiscount']);
+    Route::delete('/deleteDiscount/{id}', [DiscountController::class, 'deleteDiscount']);
+});
 
 Route::middleware('auth:api')->put('/updateState', [OrderController::class, 'updateState']);
 Route::middleware([\App\Http\Middleware\IsAdminSuperAdmin::class])->group(function () {
