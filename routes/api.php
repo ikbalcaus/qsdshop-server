@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\ColorController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\SizeController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
@@ -80,3 +81,11 @@ Route::get('/filterProducts', [FilterController::class, 'filterProducts']);
 
 Route::middleware('auth:api')->get('/getFavorites', [FavoriteController::class, 'getFavorites']);
 Route::middleware('auth:api')->post('/handleFavorite', [FavoriteController::class, 'handleFavorite']);
+
+Route::middleware('auth:api')->put('/updateState', [OrderController::class, 'updateState']);
+Route::middleware([\App\Http\Middleware\IsAdminSuperAdmin::class])->group(function () {
+Route::get('/getOrders', [OrderController::class, 'getOrders']);
+Route::get('/getOrdersPerUser', [OrderController::class, 'getOrdersPerUser']);
+});
+
+
