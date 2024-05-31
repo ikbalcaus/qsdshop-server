@@ -20,6 +20,8 @@ protected $fillable=[
     'transaction_id',
     'user_id',
     'total_price',
+    'status',
+    'comment'
 ];
 public function user():BelongsTo{
     return $this->belongsTo(User::class);

@@ -19,6 +19,10 @@ return new class extends Migration
             $table->string('phone');
             $table->string('transaction_id')->unique();
             $table->decimal('total_price',10,2);
+            $table->string('comment');
+            $table->enum('status', [1, 2, 3, 4])
+                ->comment('1 - pending, 2 - processing, 3 - delivered, 4 - cancelled')
+                ->default(1);
             $table->foreignId('user_id')->constrained();
             $table->timestamps();
         });
