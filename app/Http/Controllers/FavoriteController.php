@@ -31,16 +31,15 @@ class FavoriteController extends Controller
         $existingFavorite = Favorite::where('user_id', $user->id)->where('product_id', $product_id)->first();
         if ($existingFavorite) {
             $existingFavorite->delete();
-            $product->is_favorite = 0;
-            $product->save();
+            $existingFavorite->is_favorite = 0;
+            $existingFavorite->save();
             return response()->json(['message' => 'Favorite deleted successfully']);
         }
         $favorite = new Favorite();
         $favorite->user_id = $user->id;
         $favorite->product_id = $product_id;
+        $favorite->is_favorite = 1;
         $favorite->save();
-        $product->is_favorite = 1;
-        $product->save();
         return response()->json(['message' => 'Favorite added successfully']);
     }
 }
