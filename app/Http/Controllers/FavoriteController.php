@@ -21,9 +21,6 @@ class FavoriteController extends Controller
 
     public function handleFavorite(FavoriteRequest $request)
     {
-        if (empty($request->product_id)) {
-            return response()->json(['message' => 'Field is required'], 400);
-        }
         $user = Auth::user();
         $product_id = $request->product_id;
         $product = Product::find($product_id);
@@ -31,8 +28,6 @@ class FavoriteController extends Controller
         $existingFavorite = Favorite::where('user_id', $user->id)->where('product_id', $product_id)->first();
         if ($existingFavorite) {
             $existingFavorite->delete();
-            $existingFavorite->is_favorite = 0;
-            $existingFavorite->save();
             return response()->json(['message' => 'Favorite deleted successfully']);
         }
         $favorite = new Favorite();

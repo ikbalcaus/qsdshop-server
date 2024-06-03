@@ -18,13 +18,13 @@ class DiscountController extends Controller
 {
     public function getDiscounts()
     {
-        $discount = Discount::with('products')->get();
+        $discount = Discount::with('products')->paginate(20);
         return response()->json($discount);
     }
 
     public function getUpcomingDiscounts()
     {
-        $upcomingDiscounts = Discount::with('products')->where('valid_from', '>', Carbon::now())->get();
+        $upcomingDiscounts = Discount::with('products.images')->where('valid_from', '>', Carbon::now())->get();
         return response()->json($upcomingDiscounts);
     }
 
@@ -37,15 +37,25 @@ class DiscountController extends Controller
             'valid_to' => $request->input('valid_to'),
         ]);
         $discount->save();
+
+        $discountValue = $request->input('discount');
         if ($request->has('discount_id')) {
             $discount->discount_id = $request->input('discount_id');
         }
 
         if ($request->has('products')) {
-            $products = Product::find($request->input('products'));
-            $discount->products()->attach($products);
-        }
+            $productIds = $request->input('products');
 
+            foreach ($productIds as $productId) {
+                $product = Product::find($productId);
+                if ($product) {
+                    $newPrice = $product->price - ($product->price * $discountValue / 100);
+                    $product->price = $newPrice;
+                    $product->save();
+                }
+            }
+            $discount->products()->attach($product);
+        }
         if ($request->has('brands')) {
             $brand = $request->input('brands');
             $discount->brands()->associate($brand);
@@ -68,12 +78,9 @@ class DiscountController extends Controller
         return response()->json(['message' => 'Discount successfully added.'], 200);
     }
 
-    public function deleteDiscount(Request $request)
+    public function deleteDiscount($id)
     {
-        if (empty($request->id)) {
-            return response()->json(['message' => 'Field is required'], 400);
-        }
-        $discount = Discount::find($request->id);
+        $discount = Discount::find($id);
         if (!$discount) {
             return response()->json(['message' => 'Discount not found'], 404);
         }

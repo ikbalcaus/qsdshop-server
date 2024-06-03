@@ -25,4 +25,10 @@ class FilterRequest extends FormRequest
             'name' => 'required|string'
         ];
     }
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Field is required'
+        ];
+    }
 }

@@ -25,4 +25,11 @@ class FavoriteRequest extends FormRequest
             'product_id' => 'required|exists:products,id'
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'product_id.required' => 'Field is required'
+        ];
+    }
 }

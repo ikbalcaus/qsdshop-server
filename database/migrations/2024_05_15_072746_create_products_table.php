@@ -23,6 +23,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('color_id');
             $table->foreign('color_id')->references('id')->on('colors')->onDelete('cascade');
             $table->timestamps();
+            $table->fulltext('name', 'idx_name');
         });
     }
 
