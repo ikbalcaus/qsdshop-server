@@ -18,13 +18,13 @@ class DiscountController extends Controller
 {
     public function getDiscounts()
     {
-        $discount = Discount::with('products')->get();
+        $discount = Discount::with('products')->paginate(20);
         return response()->json($discount);
     }
 
     public function getUpcomingDiscounts()
     {
-        $upcomingDiscounts = Discount::with('products')->where('valid_from', '>', Carbon::now())->get();
+        $upcomingDiscounts = Discount::with('products.images')->where('valid_from', '>', Carbon::now())->get();
         return response()->json($upcomingDiscounts);
     }
 
@@ -68,12 +68,9 @@ class DiscountController extends Controller
         return response()->json(['message' => 'Discount successfully added.'], 200);
     }
 
-    public function deleteDiscount(Request $request)
+    public function deleteDiscount($id)
     {
-        if (empty($request->id)) {
-            return response()->json(['message' => 'Field is required'], 400);
-        }
-        $discount = Discount::find($request->id);
+        $discount = Discount::find($id);
         if (!$discount) {
             return response()->json(['message' => 'Discount not found'], 404);
         }
