@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Http\Requests\ProductRequiredRequest;
 use App\Http\Requests\ProductRequest;
 use App\Http\Requests\RateProductRequest;
 use App\Models\Image;
@@ -15,11 +16,8 @@ use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
-    public function getProduct(Request $request): JsonResponse
+    public function getProduct(ProductRequiredRequest $request): JsonResponse
     {
-        if (empty($request->id)) {
-            return response()->json(['message' => 'Fields are required'], 400);
-        }
         $products = Product::with('brands', 'color', 'categories', 'sizes', 'images')->find($request->id);
         if (!$products) {
             return response()->json(['message' => 'Product not found'], 404);
@@ -87,11 +85,8 @@ class ProductController extends Controller
         return response()->json(['message' => 'Product updated successfully'], 200);
     }
 
-    public function deleteProduct(Request $request)
+    public function deleteProduct(ProductRequiredRequest $request)
     {
-        if (empty($request->id)) {
-            return response()->json(['message' => 'Field is required'], 400);
-        }
         $product = Product::find($request->id);
         if (!$product) {
             return response()->json(['message' => 'Product not found'], 404);
