@@ -37,15 +37,25 @@ class DiscountController extends Controller
             'valid_to' => $request->input('valid_to'),
         ]);
         $discount->save();
+
+        $discountValue = $request->input('discount');
         if ($request->has('discount_id')) {
             $discount->discount_id = $request->input('discount_id');
         }
 
         if ($request->has('products')) {
-            $products = Product::find($request->input('products'));
-            $discount->products()->attach($products);
-        }
+            $productIds = $request->input('products');
 
+            foreach ($productIds as $productId) {
+                $product = Product::find($productId);
+                if ($product) {
+                    $newPrice = $product->price - ($product->price * $discountValue / 100);
+                    $product->price = $newPrice;
+                    $product->save();
+                }
+            }
+            $discount->products()->attach($product);
+        }
         if ($request->has('brands')) {
             $brand = $request->input('brands');
             $discount->brands()->associate($brand);
