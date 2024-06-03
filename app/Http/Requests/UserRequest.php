@@ -32,4 +32,22 @@ class UserRequest extends FormRequest
             'phone' => 'sometimes|string|regex:/^[0-9]+$/|min:10|max:15'
         ];
     }
+    public function messages(): array
+    {
+        return [
+            'id.required' => 'The user ID is required.',
+            'email.email' => 'The email must be a valid email address.',
+            'first_name.alpha' => 'The first name may only contain letters.',
+            'first_name.max' => 'The first name may not be greater than 255 characters.',
+            'last_name.alpha' => 'The last name may only contain letters.',
+            'last_name.max' => 'The last name may not be greater than 255 characters.',
+            'city.alpha' => 'The city name may only contain letters.',
+            'city.max' => 'The city name may not be greater than 255 characters.',
+            'address.max' => 'The address may not be greater than 255 characters.',
+            'zip_code.regex' => 'The zip code format is invalid. It should be 5 digits or 5 digits followed by a hyphen and 4 digits.',
+            'phone.regex' => 'The phone number format is invalid. It should contain only numbers.',
+            'phone.min' => 'The phone number must be at least 10 digits.',
+            'phone.max' => 'The phone number may not be greater than 15 digits.'
+        ];
+    }
 }

@@ -43,7 +43,7 @@ Route::middleware([\App\Http\Middleware\IsAdminSuperAdmin::class])->group(functi
 Route::get('/brands', [BrandController::class, 'brands']);
 Route::middleware([\App\Http\Middleware\IsAdminSuperAdmin::class])->group(function () {
     Route::post('/addBrand', [BrandController::class, 'addBrand']);
-    Route::put('/updateBrand/{id}', [BrandController::class, 'updateBrand']);
+    Route::put('/updateBrand', [BrandController::class, 'updateBrand']);
     Route::delete('/deleteBrand/{id}', [BrandController::class, 'deleteBrand']);
 });
 

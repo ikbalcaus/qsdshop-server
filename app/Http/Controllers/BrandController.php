@@ -22,27 +22,21 @@ class BrandController extends Controller
         return response()->json($brand,200);
     }
 
-    public function updateBrand(BrandRequest $request,$id){
-       try{
-           $brand= Brand::findOrFail($id);
+    public function updateBrand(BrandRequest $request){
+           $brand= Brand::find($request->input('id'));
            $brand-> update([
                'name'=>$request->name,
            ]);
                 return response()->json($brand,200);
-       }catch (ModelNotFoundException $exception) {
-                return response()->json(['message' => 'Brand not found'], 404);
-       }
     }
 
     public function deleteBrand($id){
-
-        try {
-            $brand=Brand::findOrFail($id);
+            $brand=Brand::find($id);
+            if (!$brand){
+                return response()->json(['message' => 'Brand not found'], 404);
+            }
             $brand->delete();
             return response()->json(['message'=>'Brand successfully deleted.'],200);
-        }catch(ModelNotFoundException $exception){
-            return response()->json(['message' => 'Brand not found'], 404);
-        }
     }
 
 }
