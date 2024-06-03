@@ -99,7 +99,7 @@ Route::get('/getOrders', [OrderController::class, 'getOrders']);
 Route::get('/getOrdersPerUser', [OrderController::class, 'getOrdersPerUser']);
 });
 
-Route::post('/payment', [PaymentController::class, 'payment']);
+Route::middleware('auth:api')->post('/payment', [PaymentController::class, 'payment']);
 
 
 
