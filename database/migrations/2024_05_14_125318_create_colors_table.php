@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('hex_code',7);
             $table->timestamps();
+            $table->fulltext('name', 'idx_name');
         });
     }
 

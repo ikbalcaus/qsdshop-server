@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Http\Controllers;
+
 use App\Http\Requests\ChangePasswordRequest;
 use App\Http\Requests\LoginRequests;
 use App\Http\Requests\RegisterRequests;
@@ -18,7 +20,8 @@ use App\Mail\ValidationMail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Testing\Fluent\Concerns\Has;
 use Tymon\JWTAuth\Facades\JWTAuth;
-use function Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Http;
+
 class AuthController extends Controller
 {
     public function register(RegisterRequests $request): \Illuminate\Http\JsonResponse
@@ -47,17 +50,20 @@ class AuthController extends Controller
             'user' => $user,
         ], 200);
     }
+
     public function login(LoginRequests $request): \Illuminate\Http\JsonResponse
     {
         $user = User::where('email', $request->input('email'))->first();
-
+        if (!$user->status) {
+            return response()->json(['error' => 'U have been banned.'], 403);
+        }
         if (!$user || !Hash::check($request->input('password'), $user->password)) {
             return response()->json(['message' => 'Invalid credentials'], 401);
         }
         if ($request->has('validation_key')) {
             $validationKey = ValidationKey::where('user_id', $user->id)
                 ->where('validationKey', $request->input('validation_key'))
-                ->where('expires_at','>',Carbon::now())
+                ->where('expires_at', '>', Carbon::now())
                 ->first();
             if (!$validationKey) {
                 return response()->json(['message' => 'Invalid validation key'], 400);
@@ -65,6 +71,7 @@ class AuthController extends Controller
             $validationKey->delete();
             $token = JWTAuth::fromUser($user);
             return response()->json([
+                'user' => $user,
                 'message' => 'User logged in successfully',
                 'access_token' => $token,
                 'token_type' => 'Bearer'
@@ -74,7 +81,7 @@ class AuthController extends Controller
             $key = new ValidationKey([
                 'user_id' => $user->id,
                 'validationKey' => $validationKey,
-                'expires_at'=>Carbon::now()->addMinutes(10)
+                'expires_at' => Carbon::now()->addMinutes(10)
             ]);
             $key->save();
             Mail::to($user->email)->send(new ValidationMail($validationKey));
@@ -82,6 +89,7 @@ class AuthController extends Controller
             return response()->json(['message' => 'A validation key has been sent to your email. Please provide the key to complete the login.',], 200);
         }
     }
+
     public function logout(Request $request): \Illuminate\Http\JsonResponse
     {
         $token = $request->bearerToken();
@@ -98,6 +106,7 @@ class AuthController extends Controller
             return response()->json(['message' => 'Failed to invalidate the token.', 'error' => $e->getMessage()], 500);
         }
     }
+
     public function changePassword(ChangePasswordRequest $request): \Illuminate\Http\JsonResponse
     {
         $token = $request->bearerToken();
@@ -144,6 +153,7 @@ class AuthController extends Controller
         $user->save();
         return response()->json(['message' => "Password reset successfully"], 200);
     }
+
     public function refresh(Request $request)
     {
         $user = Auth::guard('api')->user();

@@ -14,28 +14,29 @@ class ProductSize extends Model
     protected $table = 'product_sizes';
 
     protected $fillable = [
+        'amount',
         'product_id',
         'size_id'
     ];
 
     public function products()
     {
-        return $this->belongsTo(Product::class,'product_id');
+        return $this->belongsTo(Product::class, 'product_id');
     }
 
     public function sizes()
     {
-        return $this->belongsTo(Size::class,'size_id');
+        return $this->belongsTo(Size::class, 'size_id');
     }
 
 
     public function product()
     {
-        return $this->hasMany(Product::class,'product_id');
+        return $this->hasMany(Product::class, 'product_id');
     }
 
     public function size()
     {
-        return $this->hasMany(Size::class,'size_id');
+        return $this->hasMany(Size::class, 'size_id');
     }
 }

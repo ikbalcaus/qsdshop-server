@@ -2,7 +2,9 @@
 
 namespace App\Http;
 
+use App\Console\Commands\UpdateProductPrices;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use Illuminate\Support\Facades\Schedule;
 
 class Kernel extends HttpKernel
 {
@@ -65,5 +67,13 @@ class Kernel extends HttpKernel
         'auth.jwt' => \Tymon\JWTAuth\Http\Middleware\Authenticate::class,
         'adminSuperAdmin' => \App\Http\Middleware\IsAdminSuperAdmin::class,
         'superAdmin' => \App\Http\Middleware\IsSuperAdmin::class
+    ];
+
+    protected function schedule(Schedule $schedule)
+    {
+        $schedule->command('app:update-product-prices')->daily();
+    }
+    protected $commands = [
+    UpdateProductPrices::class
     ];
 }

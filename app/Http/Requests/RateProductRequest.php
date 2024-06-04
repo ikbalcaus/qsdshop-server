@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ChangePasswordRequest extends FormRequest
+class RateProductRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,9 +22,17 @@ class ChangePasswordRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'current_password' => 'required',
-            'new_password' => 'required|string|min:8|regex:/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/|different:current_password',
-            'confirm_password' => 'required|string|same:new_password',
+            "value" => 'required|integer|min:1|max:5',
+            "product_id" => 'required|integer|exists:products,id',
+            "description" => 'string|nullable'
+        ];
+    }
+    public function messages(): array
+    {
+        return [
+            'value.required' => 'Field is required',
+            'product_id.required' => 'Field is required'
+
         ];
     }
 }

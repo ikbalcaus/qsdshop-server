@@ -12,9 +12,14 @@ class Color extends Model
 
     protected $table = "colors";
     protected $fillable = [
-        "color_name",
+        "name",
         "hex_code"
     ];
+    public static function getHexCodeByColorName($colorName)
+    {
+        $colors = config('colors');
+        return $colors[strtolower($colorName)] ?? null;
+    }
 
     public function products():HasMany{
         return $this->hasMany(Product::class);
