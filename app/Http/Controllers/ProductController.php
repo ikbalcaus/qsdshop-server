@@ -100,9 +100,6 @@ class ProductController extends Controller
 
     public function rateProduct(RateProductRequest $request)
     {
-        if (empty($request->value) || empty($request->product_id)) {
-            return response()->json(['message' => 'Fields are required'], 400);
-        }
         $user = Auth::user();
         $rating = Rating::create([
             'value' => $request->value,

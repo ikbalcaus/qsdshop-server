@@ -22,9 +22,17 @@ class OrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "id" => "required",
+            "id" => "required|exists:orders,id",
             "status"=>"required",
             "comment"=>"nullable|string|max:255",
+        ];
+    }
+    public function messages()
+    {
+        return [
+            'id.required' => 'The ID is required.',
+            'id.exists' => 'The selected ID does not exist in the brands table.',
+            'status.required' => 'Status is required to be set.'
         ];
     }
 

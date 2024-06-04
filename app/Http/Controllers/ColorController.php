@@ -30,30 +30,25 @@ class ColorController extends Controller
     }
     public function updateColor(ColorRequest $request,$id)
     {
-        try {
             $colorName=$request->input('name');
             $hexCode=Color::getHexCodeByColorName($colorName);
             if (!$hexCode) {
                 return response()->json(['error' => 'Color not found.'], 404);
             }
-            $color=Color::findOrFail($id);
+            $color=Color::find($id);
             $color->Update([
                 'name'=>$colorName,
                 'hex_code'=>$hexCode,
             ]);
             return response()->json($color,200);
-        }catch(ModelNotFoundException $exception){
-            return response()->json(['message'=>'Color not found.'],404);
-        }
     }
     public function deleteColor($id){
-        try {
-            $color=Color::findOrFail($id);
+            $color=Color::find($id);
+            if(!$color){
+                return response()->json(['error' => 'Color not found.'], 404);
+            }
             $color->delete();
             return response()->json(['message'=>'Color successfully deleted.'],200);
-        }catch(ModelNotFoundException $exception){
-            return response()->json(['message'=>'Color not found.'],404);
-        }
     }
 
 
