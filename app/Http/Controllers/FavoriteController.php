@@ -15,7 +15,7 @@ class FavoriteController extends Controller
     public function getFavorites()
     {
         $user = Auth::user();
-        $favorites = Favorite::with('products')->where('user_id', $user->id)->get();
+        $favorites = Favorite::with('products.brands','products.images')->where('user_id', $user->id)->get();
         return response()->json([$favorites]);
     }
 
