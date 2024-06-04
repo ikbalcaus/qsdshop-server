@@ -27,9 +27,6 @@ class OrderController extends Controller
     }
     public function updateState(OrderRequest $request){
         $order = Order::find($request->input('id'));
-        if(!$order){
-            return response()->json(['message' => 'Order not found.'], 404);
-        }
         $order->update([
             'status' => $request->input('status'),
             'comment' => $request->input('comment',$order->comment)
