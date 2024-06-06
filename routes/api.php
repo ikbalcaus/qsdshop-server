@@ -11,6 +11,8 @@ use App\Http\Controllers\FilterController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DiscountController;
+use App\Http\Controllers\ContactController;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -92,8 +94,9 @@ Route::middleware([\App\Http\Middleware\IsAdminSuperAdmin::class])->group(functi
 
 Route::middleware('auth:api')->put('/updateState', [OrderController::class, 'updateState']);
 Route::middleware([\App\Http\Middleware\IsAdminSuperAdmin::class])->group(function () {
-Route::get('/getOrders', [OrderController::class, 'getOrders']);
-Route::get('/getOrdersPerUser', [OrderController::class, 'getOrdersPerUser']);
+    Route::get('/getOrders', [OrderController::class, 'getOrders']);
+    Route::get('/getOrdersPerUser', [OrderController::class, 'getOrdersPerUser']);
 });
 
+Route::post('/sendMessage', [ContactController::class, 'sendMessage']);
 
