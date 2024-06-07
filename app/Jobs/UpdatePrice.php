@@ -26,7 +26,7 @@ class UpdatePrice implements ShouldQueue
      */
     public function handle(): void
     {
-        /*$expiredDiscounts = Discount::where('valid_to', '<', now())->get();
+        $expiredDiscounts = Discount::where('valid_to', '<', now())->get();
         foreach ($expiredDiscounts as $discount) {
             foreach ($discount->products as $product) {
                 if ($discount->discount > 0) {
@@ -37,8 +37,5 @@ class UpdatePrice implements ShouldQueue
                 }
             }
         }
-       */
-        $this->info('The product prices have been successfully reverted to their original values after the discount expired.');
-
     }
 }
