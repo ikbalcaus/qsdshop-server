@@ -20,6 +20,7 @@ protected $fillable=[
     'city',
     'zip',
     'phone',
+    'email',
     'user_id',
     'total_price',
     'status',

@@ -21,17 +21,27 @@ class PaymentRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        /*return [
             'full_name' => 'required|string',
             'address' => 'required|string',
             'city' => 'required|string',
             'zip' => 'required|string',
             'phone' => 'required|string',
-            'total_price' => 'required|integer|min:1',
-            'card_number'=>'required|string',
-            'expiration_month'=>'required|integer|between:1,12',
-            'expiration_year'=>'required|integer',
-            'cvc'=>'required|string'
+            'total_price' => 'required|numeric',
+            'card_number' => 'required|string',
+            'expiration_month' => 'required|integer',
+            'expiration_year' => 'required|integer',
+            'cvc' => 'required|string',
+        ];*/
+        return [
+            'full_name' => 'required|string',
+            'address' => 'required|string',
+            'city' => 'required|string',
+            'email' => 'required|email',
+            'zip' => 'required|string',
+            'phone' => 'required|string',
+            'total_price' => 'required|numeric',
+            'token' => 'required|string', // Expect a token instead of raw card details
         ];
     }
 }
