@@ -39,7 +39,7 @@ class PaymentController extends Controller
                 'zip' => $request->input('zip'),
                 'email' => $request->input('email'),
                 'phone' => $request->input('phone'),
-                'total_price' => $request->input('total_price') * 100,
+                'total_price' => $request->input('total_price'),
                 'user_id' => optional(auth()->id())->id,
                 'status' =>1,
                 'transaction_id' => $intent->id,
