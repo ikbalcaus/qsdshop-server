@@ -93,7 +93,7 @@ Route::middleware([\App\Http\Middleware\IsAdminSuperAdmin::class])->group(functi
     Route::delete('/deleteDiscount/{id}', [DiscountController::class, 'deleteDiscount']);
 });
 
-Route::middleware('auth:api')->put('/updateState', [OrderController::class, 'updateState']);
+Route::put('/updateState', [OrderController::class, 'updateState']);
 Route::middleware([\App\Http\Middleware\IsAdminSuperAdmin::class])->group(function () {
 Route::get('/getOrders', [OrderController::class, 'getOrders']);
 Route::get('/getOrdersPerUser', [OrderController::class, 'getOrdersPerUser']);
