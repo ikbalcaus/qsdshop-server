@@ -12,6 +12,8 @@ use App\Http\Controllers\FilterController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DiscountController;
+use App\Http\Controllers\ContactController;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -99,4 +101,5 @@ Route::get('/getOrdersPerUser', [OrderController::class, 'getOrdersPerUser']);
 Route::put('/updateState', [OrderController::class, 'updateState']);
 });
 
+Route::post('/sendMessage', [ContactController::class, 'sendMessage']);
 Route::post('/payment', [PaymentController::class, 'payment']);
