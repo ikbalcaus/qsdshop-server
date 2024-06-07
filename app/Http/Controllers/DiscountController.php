@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\DiscountRequest;
+use App\Jobs\UpdatePrice;
 use App\Models\Discount;
 use App\Models\Product;
 use App\Models\Category;
@@ -75,6 +76,7 @@ class DiscountController extends Controller
             $categories = $request->input('categories');
             $discount->categories()->associate($categories);
         }
+        UpdatePrice::dispatch();
         return response()->json(['message' => 'Discount successfully added.'], 200);
     }
 
