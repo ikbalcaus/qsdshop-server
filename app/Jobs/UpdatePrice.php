@@ -1,33 +1,32 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Jobs;
 
 use App\Models\Discount;
-use Illuminate\Console\Command;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 
-class UpdateProductPrices extends Command
+class UpdatePrice implements ShouldQueue
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'app:update-product-prices';
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
-     * The console command description.
-     *
-     * @var string
+     * Create a new job instance.
      */
-    protected $description = 'Command description';
+    public function __construct()
+    {
+        //
+    }
 
     /**
-     * Execute the console command.
+     * Execute the job.
      */
-    public function handle()
+    public function handle(): void
     {
         $expiredDiscounts = Discount::where('valid_to', '<', now())->get();
-
         foreach ($expiredDiscounts as $discount) {
             foreach ($discount->products as $product) {
                 if ($discount->discount > 0) {
@@ -38,6 +37,5 @@ class UpdateProductPrices extends Command
                 }
             }
         }
-        $this->info('The product prices have been successfully reverted to their original values after the discount expired.');
     }
 }
