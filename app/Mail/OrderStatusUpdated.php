@@ -8,18 +8,20 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use App\Models\Order;
-class OrderConfirmation extends Mailable
+
+class OrderStatusUpdated extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $order;
     /**
      * Create a new message instance.
      */
-    public function __construct(Order $order)
+    public $order;
+    public $comment;
+    public function __construct($order,$comment)
     {
         $this->order=$order;
+        $this->comment=$comment;
     }
 
     /**
@@ -28,27 +30,18 @@ class OrderConfirmation extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Order Confirmation',
+            subject: 'QSD Shop Order Status Updated',
         );
     }
-
-    /**
-     * Get the message content definition.
-     */
-    /*public function content(): Content
+    public function build()
     {
-        return new Content(
-            view: 'mail.order_confirmation',
-        );
-    }*/
-    public function build(){
-        return $this->view('mail.order_confirmation')
-                    ->subject('QSD Shop Order Confirmation')
+        return $this->subject("QSD Shop Order Status Updated")
+                        ->view("mail.order_status_updated")
                     ->with([
                         'order'=>$this->order,
-        ]);
+                        'comment'=>$this->comment
+                    ]);
     }
-
 
     /**
      * Get the attachments for the message.
