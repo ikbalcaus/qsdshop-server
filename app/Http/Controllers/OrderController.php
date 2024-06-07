@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CommonRequest;
 use App\Http\Requests\OrderRequest;
+use App\Mail\OrderStatusUpdated;
 use App\Models\Order;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
@@ -31,6 +33,7 @@ class OrderController extends Controller
             'status' => $request->input('status'),
             'comment' => $request->input('comment',$order->comment)
         ]);
+        Mail::to($order->email)->send(new OrderStatusUpdated($order,$request->input('comment')));
         return response()->json($order,200);
     }
 }
