@@ -104,7 +104,8 @@ class ProductController extends Controller
         $rating = Rating::create([
             'value' => $request->value,
             'product_id' => $request->product_id,
-            'user_id' => $user->id
+            'user_id' => $user->id,
+            'description'=>$request->description
         ]);
         return response()->json(['message' => 'Rating saved successfully.'], 200);
     }
