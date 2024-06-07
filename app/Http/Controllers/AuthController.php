@@ -134,7 +134,7 @@ class AuthController extends Controller
             'validationKey' => $validationKey
         ]);
         $key->save();
-        Mail::to($user->email)->send(new ValidationMail($validationKey));
+        Mail::to($user->email)->queue(new ValidationMail($validationKey));
         return response()->json(['message' => "Validation key sent to mail"]);
     }
 
