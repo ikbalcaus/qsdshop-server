@@ -68,12 +68,4 @@ class Kernel extends HttpKernel
         'adminSuperAdmin' => \App\Http\Middleware\IsAdminSuperAdmin::class,
         'superAdmin' => \App\Http\Middleware\IsSuperAdmin::class
     ];
-
-    protected function schedule(Schedule $schedule)
-    {
-        $schedule->command('app:update-product-prices')->daily();
-    }
-    protected $commands = [
-    UpdateProductPrices::class
-    ];
 }
