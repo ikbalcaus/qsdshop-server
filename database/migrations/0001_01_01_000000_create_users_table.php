@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->string('email')->unique();
-            $table->enum('role', [1,2,3])->comment('1 - superAdmin, 2 - admin, 3 - customer')->default(3);
+            $table->enum('role', [1,2,3,4])->comment('1 - superAdmin, 2 - admin, 3 - customer,4 - delivery')->default(3);
             $table->boolean('status')->default(true);
             $table->string('password');
             $table->string('city')->nullable();
