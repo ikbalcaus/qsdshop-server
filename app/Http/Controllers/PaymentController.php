@@ -44,7 +44,7 @@ class PaymentController extends Controller
                 'status' =>1,
                 'transaction_id' => $intent->id,
             ]);
-            Mail::to($order->email)->send(new OrderConfirmation($order));
+            Mail::to($order->email)->queue(new OrderConfirmation($order));
             return response()->json([
                'payment_intent'=>$intent->id,
                 'client_secret'=>$intent->client_secret,
