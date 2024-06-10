@@ -21,7 +21,7 @@ class ContactController extends Controller
             'message' => $request->input('message'),
         ]);
         $contact->save();
-        Mail::to('adnan.voloder9@gmail.com')->send(new ContactFormMail($contact));
+        Mail::to('adnan.voloder9@gmail.com')->queue(new ContactFormMail($contact));
         return response()->json(['message' => 'Contact request has been successfully submitted.'], 200);
     }
 }
