@@ -21,18 +21,6 @@ class PaymentRequest extends FormRequest
      */
     public function rules()
     {
-        /*return [
-            'full_name' => 'required|string',
-            'address' => 'required|string',
-            'city' => 'required|string',
-            'zip' => 'required|string',
-            'phone' => 'required|string',
-            'total_price' => 'required|numeric',
-            'card_number' => 'required|string',
-            'expiration_month' => 'required|integer',
-            'expiration_year' => 'required|integer',
-            'cvc' => 'required|string',
-        ];*/
         return [
             'full_name' => 'required|string',
             'address' => 'required|string',

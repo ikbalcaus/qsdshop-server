@@ -47,7 +47,6 @@ class UserController extends Controller
         $user->delete();
         return response()->json(['message'=>'User deleted successfully.'],200);
      }
-     //skini token
      public function banUser(UserRequest $request){
         $id=$request->id;
         $user=User::find($id);
