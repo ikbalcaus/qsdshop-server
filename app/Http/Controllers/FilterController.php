@@ -77,7 +77,7 @@ class FilterController extends Controller
             }
         }
 
-        $query->with('categories', 'brands', 'color', 'sizes');
+        $query->with('categories', 'brands', 'color', 'sizes','images');
         $products = $query->get();
         return response()->json($products);
     }
