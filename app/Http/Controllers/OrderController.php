@@ -33,7 +33,7 @@ class OrderController extends Controller
             'status' => $request->input('status'),
             'comment' => $request->input('comment',$order->comment)
         ]);
-        Mail::to($order->email)->send(new OrderStatusUpdated($order,$request->input('comment')));
+        Mail::to($order->email)->queue(new OrderStatusUpdated($order,$request->input('comment')));
         return response()->json($order,200);
     }
 }
