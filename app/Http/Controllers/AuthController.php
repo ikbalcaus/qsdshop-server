@@ -54,6 +54,9 @@ class AuthController extends Controller
     public function login(LoginRequests $request): \Illuminate\Http\JsonResponse
     {
         $user = User::where('email', $request->input('email'))->first();
+        if (!$user) {
+            return response()->json(['message' => 'Invalid credentials'], 401);
+        }
         if (!$user->status) {
             return response()->json(['error' => 'U have been banned.'], 403);
         }

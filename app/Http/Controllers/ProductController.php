@@ -18,7 +18,7 @@ class ProductController extends Controller
 {
     public function getProduct(ProductRequiredRequest $request): JsonResponse
     {
-        $products = Product::with('brands', 'color', 'categories', 'sizes', 'images', 'rating.user')->find($request->id);
+        $products = Product::withTrashed()->with('brands', 'color', 'categories', 'sizes', 'images', 'rating.user')->find($request->id);
         if (!$products) {
             return response()->json(['message' => 'Product not found'], 404);
         }
@@ -27,7 +27,7 @@ class ProductController extends Controller
 
     public function getProducts(): JsonResponse
     {
-        $products = Product::with('brands', 'color', 'categories', 'sizes', 'images')->paginate(20);
+        $products = Product::withTrashed()->with('brands', 'color', 'categories', 'sizes', 'images')->paginate(20);
         return response()->json($products, 200);
     }
 

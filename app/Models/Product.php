@@ -35,12 +35,12 @@ class Product extends Model
 
     public function brands(): BelongsTo
     {
-        return $this->belongsTo(Brand::class, 'brand_id', 'id');
+        return $this->belongsTo(Brand::class, 'brand_id', 'id')->withTrashed();
     }
 
     public function color(): BelongsTo
     {
-        return $this->belongsTo(Color::class);
+        return $this->belongsTo(Color::class)->withTrashed();
     }
 
     public function rating(): HasMany
@@ -65,17 +65,17 @@ class Product extends Model
 
     public function productCategories(): BelongsTo
     {
-        return $this->belongsTo(ProductCategory::class);
+        return $this->belongsTo(ProductCategory::class)->withTrashed();
     }
 
     public function categories(): BelongsToMany
     {
-        return $this->belongsToMany(Category::class, 'product_categories', 'product_id', 'category_id');
+        return $this->belongsToMany(Category::class, 'product_categories', 'product_id', 'category_id')->withTrashed();
     }
 
     public function sizes(): BelongsToMany
     {
-        return $this->belongsToMany(Size::class, 'product_sizes')->withPivot('amount');
+        return $this->belongsToMany(Size::class, 'product_sizes')->withPivot('amount')->withTrashed();
     }
 
     public function discounts()
