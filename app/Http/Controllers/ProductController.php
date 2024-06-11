@@ -18,7 +18,7 @@ class ProductController extends Controller
 {
     public function getProduct(ProductRequiredRequest $request): JsonResponse
     {
-        $products = Product::with('brands', 'color', 'categories', 'sizes', 'images')->find($request->id);
+        $products = Product::with('brands', 'color', 'categories', 'sizes', 'images','rating.user')->find($request->id);
         if (!$products) {
             return response()->json(['message' => 'Product not found'], 404);
         }
@@ -104,7 +104,8 @@ class ProductController extends Controller
         $rating = Rating::create([
             'value' => $request->value,
             'product_id' => $request->product_id,
-            'user_id' => $user->id
+            'user_id' => $user->id,
+            'description'=>$request->description
         ]);
         return response()->json(['message' => 'Rating saved successfully.'], 200);
     }

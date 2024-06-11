@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\SizeController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
@@ -11,6 +12,8 @@ use App\Http\Controllers\FilterController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DiscountController;
+use App\Http\Controllers\ContactController;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -66,8 +69,10 @@ Route::middleware([\App\Http\Middleware\IsAdminSuperAdmin::class])->group(functi
 });
 
 //dodaj middleware
+Route::middleware([\App\Http\Middleware\IsAdminSuperAdmin::class])->group(function () {
 Route::get('/getUser/{id}', [UserController::class, 'getUser']);
 Route::get('/users', [UserController::class, 'users']);
+});
 Route::middleware('auth:api')->group(function () {
     Route::put('/updateUser', [UserController::class, 'updateUser']);
     Route::delete('/deleteUser', [UserController::class, 'deleteUser']);
@@ -90,10 +95,11 @@ Route::middleware([\App\Http\Middleware\IsAdminSuperAdmin::class])->group(functi
     Route::delete('/deleteDiscount/{id}', [DiscountController::class, 'deleteDiscount']);
 });
 
-Route::middleware('auth:api')->put('/updateState', [OrderController::class, 'updateState']);
 Route::middleware([\App\Http\Middleware\IsAdminSuperAdmin::class])->group(function () {
 Route::get('/getOrders', [OrderController::class, 'getOrders']);
 Route::get('/getOrdersPerUser', [OrderController::class, 'getOrdersPerUser']);
+Route::put('/updateState', [OrderController::class, 'updateState']);
 });
 
-
+Route::post('/sendMessage', [ContactController::class, 'sendMessage']);
+Route::post('/payment', [PaymentController::class, 'payment']);
