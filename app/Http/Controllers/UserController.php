@@ -53,10 +53,18 @@ class UserController extends Controller
          if(!$user){
              return response()->json(['error'=>'User Not Found'],404);
          }
-         $user->update([
-             'status'=>0,
-         ]);
-         $message="User: {$user->id} {$user->first_name} {$user->last_name} has been banned.";
+         if($user->status) {
+             $user->update([
+                 'status' => 0,
+             ]);
+             $message = "User: {$user->id} {$user->first_name} {$user->last_name} has been banned.";
+         }else
+         {
+             $user->update([
+                 'status' => 1,
+             ]);
+             $message = "User: {$user->id} {$user->first_name} {$user->last_name} successfully unbanned.";
+         }
          return response()->json(['message'=>$message],200);
      }
      public function updateRole(UserRequest $request){
