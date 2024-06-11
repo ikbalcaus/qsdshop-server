@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminStatsController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\ColorController;
@@ -103,3 +104,5 @@ Route::put('/updateState', [OrderController::class, 'updateState']);
 
 Route::post('/sendMessage', [ContactController::class, 'sendMessage']);
 Route::post('/payment', [PaymentController::class, 'payment']);
+
+Route::get('/adminDashboard',[AdminStatsController::class, 'adminDashboard']);
