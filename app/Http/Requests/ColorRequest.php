@@ -22,13 +22,14 @@ class ColorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'=>'required'
+            'name'=>'required|unique:colors,name'
         ];
     }
     public function messages(): array
     {
         return [
             'name.required' => 'The color name is required.',
+            'name.unique:colors,name' => 'The color :name is already taken.',
         ];
     }
 }
