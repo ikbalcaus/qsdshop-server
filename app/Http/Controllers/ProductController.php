@@ -27,7 +27,21 @@ class ProductController extends Controller
 
     public function getProducts(): JsonResponse
     {
-        $products = Product::withTrashed()->with('brands', 'color', 'categories', 'sizes', 'images')->paginate(20);
+        $products = Product::with([
+            'brands' => function ($query) {
+                $query->withTrashed();
+            },
+            'color' => function ($query) {
+                $query->withTrashed();
+            },
+            'categories' => function ($query) {
+                $query->withTrashed();
+            },
+            'sizes' => function ($query) {
+                $query->withTrashed();
+            },
+            'images'
+        ])->paginate(20);
         return response()->json($products, 200);
     }
 
