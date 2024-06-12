@@ -54,6 +54,9 @@ class AuthController extends Controller
     public function login(LoginRequests $request): \Illuminate\Http\JsonResponse
     {
         $user = User::where('email', $request->input('email'))->first();
+        if (!$user) {
+            return response()->json(['message' => 'Invalid credentials'], 401);
+        }
         if (!$user->status) {
             return response()->json(['error' => 'U have been banned.'], 403);
         }
@@ -84,7 +87,7 @@ class AuthController extends Controller
                 'expires_at' => Carbon::now()->addMinutes(10)
             ]);
             $key->save();
-            Mail::to($user->email)->send(new ValidationMail($validationKey));
+            Mail::to($user->email)->queue(new ValidationMail($validationKey));
 
             return response()->json(['message' => 'A validation key has been sent to your email. Please provide the key to complete the login.',], 200);
         }
@@ -134,7 +137,7 @@ class AuthController extends Controller
             'validationKey' => $validationKey
         ]);
         $key->save();
-        Mail::to($user->email)->send(new ValidationMail($validationKey));
+        Mail::to($user->email)->queue(new ValidationMail($validationKey));
         return response()->json(['message' => "Validation key sent to mail"]);
     }
 

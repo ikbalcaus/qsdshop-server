@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ProductRequest extends FormRequest
 {
@@ -23,16 +24,32 @@ class ProductRequest extends FormRequest
     {
         return [
             "id" => 'nullable|integer',
-            "name" => "required|string|unique:products,name",
+            "name" => "required|string",
             'price' => 'required|numeric|min:1.0',
             'description' => 'string|nullable',
             'gender' => 'required|integer|in:1,2,3',
-            'brand_id' => 'required|integer|exists:brands,id',
-            'color_id' => 'required|integer|exists:colors,id',
+            'brand_id' => [
+                'required',
+                'integer',
+                Rule::exists('brands', 'id')->whereNull('deleted_at')
+            ],
+            'color_id' => [
+                'required',
+                'integer',
+                Rule::exists('colors', 'id')->whereNull('deleted_at')
+            ],
             'categories' => 'required|array',
-            'categories.*' => 'required|integer|exists:category,id',
+            'categories.*' => [
+                'required',
+                'integer',
+                Rule::exists('category', 'id')->whereNull('deleted_at')
+            ],
             'sizes' => 'required|array',
-            'sizes.*.size_id' => 'required|integer|exists:size,id',
+            'sizes.*.size_id' => [
+                'required',
+                'integer',
+                Rule::exists('size', 'id')->whereNull('deleted_at')
+            ],
             'sizes.*.amount' => 'required|integer|min:1',
             'images' => 'required|array|min:1|max:6',
             'images.*' => 'required|image|mimes:jpeg,png,jpg,webp'

@@ -69,13 +69,15 @@ class FilterController extends Controller
                     $query->join($filter === 'sizes' ? 'product_sizes' : 'product_categories', 'products.id',
                         '=', $filter === 'sizes' ? 'product_sizes.product_id' : 'product_categories.product_id')
                         ->whereIn($column, $request->$filter);
+                } elseif ($filter === 'genders') {
+                    $query->where($column, $request->$filter);
                 } else {
                     $query->where($column, $filter === 'min_price' ? '>=' : '<=', $request->$filter);
                 }
             }
         }
 
-        $query->with('categories', 'brands', 'color', 'sizes');
+        $query->with('categories', 'brands', 'color', 'sizes','images');
         $products = $query->get();
         return response()->json($products);
     }

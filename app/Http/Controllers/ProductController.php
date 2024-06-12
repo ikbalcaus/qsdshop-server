@@ -18,7 +18,7 @@ class ProductController extends Controller
 {
     public function getProduct(ProductRequiredRequest $request): JsonResponse
     {
-        $products = Product::with('brands', 'color', 'categories', 'sizes', 'images','rating.user')->find($request->id);
+        $products = Product::withTrashed()->with('brands', 'color', 'categories', 'sizes', 'images', 'rating.user')->find($request->id);
         if (!$products) {
             return response()->json(['message' => 'Product not found'], 404);
         }
@@ -27,7 +27,21 @@ class ProductController extends Controller
 
     public function getProducts(): JsonResponse
     {
-        $products = Product::with('brands', 'color', 'categories', 'sizes', 'images')->paginate(20);
+        $products = Product::with([
+            'brands' => function ($query) {
+                $query->withTrashed();
+            },
+            'color' => function ($query) {
+                $query->withTrashed();
+            },
+            'categories' => function ($query) {
+                $query->withTrashed();
+            },
+            'sizes' => function ($query) {
+                $query->withTrashed();
+            },
+            'images'
+        ])->paginate(20);
         return response()->json($products, 200);
     }
 
@@ -98,15 +112,32 @@ class ProductController extends Controller
         return response()->json(['message' => "Product was successfully deleted"], 200);
     }
 
+    private function updateRating(Request $request): void
+    {
+        $averageRating = Rating::where('product_id', $request->product_id)->avg('value') ?? 0;
+        Product::where('id', $request->product_id)->update(['average_rating' => $averageRating]);
+
+        $totalRating = Rating::where('product_id', $request->product_id)->count();
+        Product::where('id', $request->product_id)->update(['total_rating' => $totalRating]);
+    }
+
     public function rateProduct(RateProductRequest $request)
     {
         $user = Auth::user();
+
+        $existingRating = Rating::where('product_id', $request->product_id)->where('user_id', $user->id);
+        if ($existingRating->count() > 0) {
+            $existingRating->update(['value' => $request->value]);
+            $this->updateRating($request);
+            return response()->json(['message' => 'Rating updated successfully.'], 200);
+        }
         $rating = Rating::create([
             'value' => $request->value,
             'product_id' => $request->product_id,
             'user_id' => $user->id,
-            'description'=>$request->description
+            'description' => $request->description
         ]);
+        $this->updateRating($request);
         return response()->json(['message' => 'Rating saved successfully.'], 200);
     }
 

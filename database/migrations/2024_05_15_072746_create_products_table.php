@@ -24,6 +24,7 @@ return new class extends Migration {
             $table->foreign('color_id')->references('id')->on('colors')->onDelete('cascade');
             $table->timestamps();
             $table->fulltext('name', 'idx_name');
+            $table->softDeletes();
         });
     }
 

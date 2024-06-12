@@ -29,7 +29,8 @@ class UserRequest extends FormRequest
             'city' => 'sometimes|string|alpha|max:255',
             'address' => 'sometimes|string|max:255',
             'zip_code' => 'sometimes|string|regex:/^\d{5}(-\d{4})?$/',
-            'phone' => 'sometimes|string|regex:/^[0-9]+$/|min:10|max:15'
+            'phone' => 'sometimes|string|regex:/^[0-9]+$/|min:10|max:15',
+            'role'=>'sometimes|in:1,2,3,4'
         ];
     }
     public function messages(): array
@@ -47,7 +48,8 @@ class UserRequest extends FormRequest
             'zip_code.regex' => 'The zip code format is invalid. It should be 5 digits or 5 digits followed by a hyphen and 4 digits.',
             'phone.regex' => 'The phone number format is invalid. It should contain only numbers.',
             'phone.min' => 'The phone number must be at least 10 digits.',
-            'phone.max' => 'The phone number may not be greater than 15 digits.'
+            'phone.max' => 'The phone number may not be greater than 15 digits.',
+            'role.in' => 'The selected role is invalid. It must be one of the following values: 1, 2, 3, or 4.'
         ];
     }
 }
