@@ -19,7 +19,7 @@
     <strong>Email:</strong> {{ $order->email }}<br>
     <strong>Phone:</strong> {{ $order->phone }}<br>
     <strong>Address:</strong> {{ $order->address }}, {{ $order->city }}, {{ $order->zip }}<br>
-    <strong>Total Price:</strong> ${{ number_format($order->total_price / 100, 2) }}<br>
+    <strong>Total Price:</strong> ${{ number_format($order->total_price, 2) }}<br>
 </p>
 {{--<div>
 <p>Product: {{$order->orderProductSize->productSize->product->name}}</p>
