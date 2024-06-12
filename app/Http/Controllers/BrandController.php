@@ -16,9 +16,6 @@ class BrandController extends Controller
     }
 
     public function addBrand(BrandRequest $request){
-        if (Brand::where('name',$request->input('name'))->exists()) {
-            return response()->json(['message'=>'Brand already exists'],400);
-        }
         $brand=Brand::create([
            'name'=>$request->name,
         ]);
